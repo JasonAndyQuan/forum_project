@@ -16,7 +16,10 @@ const postsPOST = asyncHandler((req, res) => {
 });
 const postsGET = asyncHandler((req, res) => {
   console.log(" I am posts GET");
-  res.send(" I am posts GET");
+  res.json([
+    { id: 1, title: "First Blog Post" },
+    { id: 2, title: "Second Blog Post" },
+  ]);
   //do stuff
 });
 const postsPUT = asyncHandler((req, res) => {

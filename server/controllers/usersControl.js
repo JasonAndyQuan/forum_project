@@ -15,5 +15,4 @@ const usersGET = asyncHandler((req,res)=>{
 const usersPOST = asyncHandler((req,res)=>{
 
 });
-
 export {usersGET, usersPOST, usersHOME};
