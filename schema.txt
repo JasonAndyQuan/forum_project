@@ -1,0 +1,17 @@
+
+- accounts
+    - can post and comment
+
+routes:
+
+'/': redirect to '/posts'
+
+'/posts':  (CRUD)
+    - is the homepage
+    -> '/posts/:id/
+        - an individual text article
+
+'/users/:id/': (Read only)
+    - each users with their comment history.
+
+
