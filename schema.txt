@@ -15,3 +15,47 @@ routes:
     - each users with their comment history.
 
 
+
+-> Build the frontend
+-> Set up postgres with prisma
+-> sign up forms
+-> user auth and validations with JWT
+
+
+TABLES
+
+
+user
+----------
+userId
+username
+email
+array of comment ids (join with comment)
+date created
+password (hashed)
+isAdmin?
+
+
+post
+----------
+postId
+authorID (join with userId)
+title
+content
+array of comment ids (join with comment)
+date created
+like count
+published
+
+
+comment
+-----------
+commentId
+id (joined with postId and userId)
+title
+content
+like count
+date created
+
+
+
