@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import { createPost } from "../storages/queries.js";
 /*
 '/posts':  (CRUD)
     - is the homepage
@@ -11,8 +12,9 @@ import asyncHandler from "express-async-handler";
 // PUT /posts/:id: Update a post by ID
 // DELETE /posts/:id: Delete a post by ID
 */
-const postsPOST = asyncHandler((req, res) => {
-  //do stuff
+const postsPOST = asyncHandler( async (req, res) => {
+  await createPost(100, "the first post", "testing")
+  res.send("post created !");
 });
 const postsGET = asyncHandler((req, res) => {
   console.log(" I am posts GET");

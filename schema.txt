@@ -17,45 +17,48 @@ routes:
 
 
 -> Build the frontend
--> Set up postgres with prisma
+-> Set up postgres
 -> sign up forms
 -> user auth and validations with JWT
 
 
 TABLES
 
-
-user
+users
 ----------
-userId
-username
-email
-array of comment ids (join with comment)
-date created
-password (hashed)
-isAdmin?
+userID                                      SERIAL
+email                                       VARCHAR(255)
+username                                    VARCHAR(30)
+password (hashed)                           VARCHAR(255)
+date                                        DATE
+isAdmin                                     BOOL
 
+-> CREATE TABLE users (userID SERIAL, email VARCHAR(255), 
+username VARCHAR(30), password VARCHAR(255), date DATE, isAdmin BOOL);
 
-post
+ALTER SEQUENCE users_userid_seq RESTART WITH 1;
+
+posts
 ----------
-postId
-authorID (join with userId)
-title
-content
-array of comment ids (join with comment)
-date created
-like count
-published
+postID                                      SERIAL
+authorID (join with userId)                 int
+title                                       VARCHAR(50)
+content                                     text
+likes                                       int
+published                                   DATE
 
+-> CREATE TABLE posts (postID SERIAL, authorID int, title VARCHAR(50), 
+content VARCHAR(1000), likes int, published DATE);
 
-comment
+comments
 -----------
-commentId
-id (joined with postId and userId)
-title
-content
-like count
-date created
+commentID                                   SERIAL
+authorID (joined with postId and userId)    int
+postID (joined with postId and userId)      int
+content                                     VARCHAR(300)
+likes                                       int
+published                                   DATE
 
-
+-> CREATE TABLE comments (commentID SERIAL, authorID int, postID int, 
+content VARCHAR(300), likes int, published DATE);
 

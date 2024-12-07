@@ -1,4 +1,5 @@
-import {Pool} from "pg";
+import pg from "pg";
+const {Pool} = pg;
 
 export default new Pool({
     host:process.env.HOST,
@@ -6,4 +7,7 @@ export default new Pool({
     database:process.env.DATABASE,
     password:process.env.PASSWORD,
     port:process.env.DBPORT,
+    // connectionString:process.env.CS,
 })
+
+
