@@ -13,6 +13,8 @@ const usersGET = asyncHandler((req, res) => {
   res.send(`I am users GET with Param ${req.params.id}`);
 });
 const usersPOST = asyncHandler( async (req, res) => {
+    
+
     await createUser("First@gmail.com", "Tester", "Password123");
     res.send ("user created");
 });

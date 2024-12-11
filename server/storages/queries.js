@@ -2,12 +2,14 @@ import db from "./pool.js";
 
 /* 
  
- Creates: createUser, createPost, createComment
+ Creates: createUser, createPost, createComment  X
  Reads:
-    getPosts
-    filterPosts (given userid): show users post history
-    getUser
-    getComments (given either postid or userid): show comments under a post or a users comment history
+    getPosts      X
+    filterPosts (given userid): show users post history X
+    getUser  X
+    getComments (given either postid or userid): show comments under a post or a users comment history X
+
+    
  updates: updateUser, updatePost, updateComment
  deletes: deleteUser, deletePost, deleteComment
 
@@ -26,10 +28,27 @@ const createPost = async function (authorid, title, content) {
 };
 
 const createComment = async function (authorid, postid, content) {
-    await db.query(
-        "INSERT into comments (authorid, postid, content, likes, published) VALUES ($1, $2, $3, $4, $5)",
-        [authorid, postid, content, 0, "today"]
-      );
+  await db.query(
+    "INSERT into comments (authorid, postid, content, likes, published) VALUES ($1, $2, $3, $4, $5)",
+    [authorid, postid, content, 0, "today"]
+  );
 };
 
-export { createUser, createPost, createComment };
+const getUser = async function (id) {
+  return db.query("SELECT * FROM users WHERE id = $1", [id]);
+};
+
+const getComments = async function (table, id) {
+  const param = (table == "users") ? "authorid" : "postid";
+  return db.query(`SELECT * FROM ${table} WHERE ${param} = $1`, [id]);
+};
+
+const getPosts = async function () {
+  return db.query("SELECT * FROM posts");
+};
+
+const filterPosts = async function (id) {
+  return db.query("SELECT * FROM POSTS WHERE authorid = $1", [id]);
+};
+
+export { createUser, createPost, createComment, getUser, getComments, getPosts, filterPosts };
