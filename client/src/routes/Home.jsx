@@ -1,5 +1,6 @@
 import { getPosts } from "../utils/api";
 import { useState, useEffect } from "react";
+import ButtonsBox from "../components/ButtonsBox";
 import PostContainer from "../components/PostContainer";
 
 const Home = () => {
@@ -27,7 +28,7 @@ const Home = () => {
             <div className="bg-red-300"> no posts available </div>
           )}
         </div>
-        <div className="bg-slate-800 w-[25%]">this is buttons box</div>
+        <ButtonsBox />
       </div>
     </>
   );
