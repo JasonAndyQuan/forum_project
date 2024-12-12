@@ -6,7 +6,7 @@ const PostContainer = ({ post }) => {
 
   return (
     <>
-      <Link to="/" className="border-t-2 p-1 last:border-b-2 h-[30%] w-[100%] hover:bg-[#2E233C] border-[#342744] flex flex-col">
+      <Link to="/" className="border-t-2 p-2 last:border-b-2 h-[30%] w-[100%] hover:bg-[#2E233C] border-[#342744] flex flex-col">
           <div className="h-[20%] p-1 text-2xl font-[550]">
             {" "}
             {post.title}{" "}

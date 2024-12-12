@@ -1,10 +1,14 @@
 import { getPosts } from "../utils/api";
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import ButtonsBox from "../components/ButtonsBox";
 import PostContainer from "../components/PostContainer";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const {reveal} = useOutletContext();
+  console.log(reveal);
+
   const handlePosts = (postList) => {
     setPosts(postList);
   };
@@ -18,17 +22,17 @@ const Home = () => {
 
   return (
     <>
-      <div className="bg-[#281E34] w-[100%] h-screen text-green-900 flex p-5 gap-5">
-        <div className="w-[80%] flex flex-col p-3 overflow-y-auto">
+      <div className="bg-[#281E34] w-[100%] h-screen flex p-5 gap-5 overflow-auto">
+        <div className="w-[80%] flex flex-col p-3 ">
           {posts ? (
             posts.map((post) => {
-              return <PostContainer post={post} />;
+              return <PostContainer post={post} key={post.postid} />;
             })
           ) : (
             <div className="bg-red-300"> no posts available </div>
           )}
         </div>
-        <ButtonsBox />
+        {reveal ? <div> </div> : <ButtonsBox />}
       </div>
     </>
   );

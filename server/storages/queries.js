@@ -7,6 +7,7 @@ import db from "./pool.js";
     getPosts      X
     filterPosts (given userid): show users post history X
     getUser  X
+    checkUser x
     getComments (given either postid or userid): show comments under a post or a users comment history X
 
     
@@ -37,18 +38,23 @@ const createComment = async function (authorid, postid, content) {
 const getUser = async function (id) {
   return db.query("SELECT * FROM users WHERE id = $1", [id]);
 };
+const checkUser = async function (username) {
+  const {rows} = await db.query("SELECT * FROM users WHERE username = $1", [username]);
+  return ((rows[0]) ? true : false); //if user exists, return true
+};
 
 const getComments = async function (table, id) {
   const param = (table == "users") ? "authorid" : "postid";
-  return db.query(`SELECT * FROM ${table} WHERE ${param} = $1`, [id]);
+  return await db.query(`SELECT * FROM ${table} WHERE ${param} = $1`, [id]);
 };
 
 const getPosts = async function () {
-  return db.query("SELECT * FROM posts");
+  const {rows} =  await db.query("SELECT * FROM posts")
+  return rows;
 };
 
 const filterPosts = async function (id) {
-  return db.query("SELECT * FROM POSTS WHERE authorid = $1", [id]);
+  return await db.query("SELECT * FROM POSTS WHERE authorid = $1", [id]);
 };
 
-export { createUser, createPost, createComment, getUser, getComments, getPosts, filterPosts };
+export { createUser, createPost, createComment, getUser, checkUser, getComments, getPosts, filterPosts };

@@ -17,7 +17,7 @@ const postsPOST = asyncHandler(async (req, res) => {
   res.send("post created !");
 });
 const postsGET = asyncHandler(async (req, res) => {
-  const posts = (await getPosts()).rows;
+  const posts = await getPosts();
   console.log("posts sent");
   res.json(posts);
 });
