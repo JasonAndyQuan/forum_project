@@ -12,7 +12,7 @@ const validateUser = () => [
     .notEmpty()
     .withMessage("Username is required")
     .isLength({ min: 3, max: 25 })
-    .withMessage("Username must be between 3 and 25 chars")
+    .withMessage("Must be 3 - 25 chars")
     .custom(async (username) => {
       if (await checkUser(username))
         throw new Error("Username already exists");
@@ -23,7 +23,7 @@ const validateUser = () => [
     .notEmpty()
     .withMessage("Password is required")
     .isLength({ min: 8 })
-    .withMessage("Password must be atleast 8 chars")
+    .withMessage("Must be atleast 8 chars")
     .escape(),
   body("email")
     .trim()
@@ -55,7 +55,7 @@ const usersPOST = asyncHandler(async (req, res) => {
       await createUser(req.body.email, req.body.username, hash);
     });
   }
-  res.send("user created");
+    return res.send(JSON.stringify(result));  
 });
 
 export { usersGET, usersPOST, usersHOME, validateUser };

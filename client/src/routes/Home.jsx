@@ -7,7 +7,6 @@ import PostContainer from "../components/PostContainer";
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const {reveal} = useOutletContext();
-  console.log(reveal);
 
   const handlePosts = (postList) => {
     setPosts(postList);

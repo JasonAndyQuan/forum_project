@@ -11,11 +11,11 @@ const getPosts = async function () {
   }
 };
 const createUser = async function (username, email, password) {
-    console.log (username);
-    console.log(password);
-    console.log(email);  
-    try {
-    await fetch("http://localhost:3000/users", {
+  // console.log (username);
+  // console.log(password);
+  // console.log(email);
+  try {
+    const result = await fetch("http://localhost:3000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,6 +26,7 @@ const createUser = async function (username, email, password) {
         password: password,
       }),
     });
+    return await result.json();
   } catch (error) {
     console.error("Fetch error:", error);
     throw error;

@@ -2,7 +2,7 @@ import { FaHeart } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const PostContainer = ({ post }) => {
-  console.log(post);
+  // console.log(post);
 
   return (
     <>
