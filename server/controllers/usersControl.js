@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
-import { createUser, checkUser } from "../storages/queries.js";
+import { createUser, getUser_username } from "../storages/queries.js";
+import jwt from "jsonwebtoken";
 
 //get /:id, show user profile and their comments
 //post , create a user profile
@@ -14,8 +15,9 @@ const validateUser = () => [
     .isLength({ min: 3, max: 25 })
     .withMessage("Must be 3 - 25 chars")
     .custom(async (username) => {
-      if (await checkUser(username))
+      if (await getUser_username(username)) {
         throw new Error("Username already exists");
+      }
     })
     .escape(),
   body("password")
@@ -55,7 +57,34 @@ const usersPOST = asyncHandler(async (req, res) => {
       await createUser(req.body.email, req.body.username, hash);
     });
   }
-    return res.send(JSON.stringify(result));  
+  return res.send(JSON.stringify(result));
+});
+const usersLOGIN = asyncHandler(async (req, res) => {
+  const user = await getUser_username(req.body.username);
+  if (!user) {
+    console.log("User does not exist");
+    return res.send(JSON.stringify({ error: "User does not exist" }));
+  } else {
+    bcrypt.compare(req.body.password, user.password, (err, result) => {
+      if (err)
+          return;
+
+      if (result) {
+        console.log("match");
+
+        const data = {userid: user.userid, username: user.username, email: user.email}
+        jwt.sign(data, process.env.JWTKEY, (err,token) =>{
+          if (err)
+            console.log("error at jwtToken stuffs");
+          res.json({token});
+        });
+      }
+      else {
+        console.log("wrong passwrod");
+        return res.send(JSON.stringify({ error: "Incorrect password" }));
+      }
+    });
+  }
 });
 
-export { usersGET, usersPOST, usersHOME, validateUser };
+export { usersGET, usersPOST, usersHOME, usersLOGIN, validateUser };

@@ -33,4 +33,23 @@ const createUser = async function (username, email, password) {
   }
 };
 
-export { getPosts, createUser };
+const loginUser = async function(username, password){
+  try {
+    const result = await fetch("http://localhost:3000/users/login", {
+      method: "POST",
+      headers:{
+        "Content-Type": "application/json",
+      },
+      body : JSON.stringify({
+        username,
+        password,
+      })
+    })
+    // console.log(await result.json());
+    return await result.json();
+  } catch (error){
+    console.log(error);
+  }
+}
+
+export { getPosts, createUser, loginUser };

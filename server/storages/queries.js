@@ -36,11 +36,11 @@ const createComment = async function (authorid, postid, content) {
 };
 
 const getUser = async function (id) {
-  return db.query("SELECT * FROM users WHERE id = $1", [id]);
+  return await db.query("SELECT * FROM users WHERE id = $1", [id]);
 };
-const checkUser = async function (username) {
+const getUser_username = async function (username) {
   const {rows} = await db.query("SELECT * FROM users WHERE username = $1", [username]);
-  return ((rows[0]) ? true : false); //if user exists, return true
+  return rows[0] //if user exists, return true
 };
 
 const getComments = async function (table, id) {
@@ -57,4 +57,4 @@ const filterPosts = async function (id) {
   return await db.query("SELECT * FROM POSTS WHERE authorid = $1", [id]);
 };
 
-export { createUser, createPost, createComment, getUser, checkUser, getComments, getPosts, filterPosts };
+export { createUser, createPost, createComment, getUser, getUser_username, getComments, getPosts, filterPosts };

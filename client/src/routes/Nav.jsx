@@ -7,7 +7,7 @@ import SignUpModal from "../components/SignUpModal";
 
 const Nav = () => {
 
-  const [reveal, setReveal] = useState(true);
+  const [reveal, setReveal] = useState(false);
   const [auth, setAuth] = useState(false); //false -> login / signup  true -> logout
 
   const handleReveal = () => {
