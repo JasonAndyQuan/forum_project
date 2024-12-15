@@ -14,8 +14,8 @@
 
 */
 
-import { postsPOST, postsGET, postsPUT, postsDELETE } from '../controllers/postsControl.js'
-import express from "express";
+const { postsPOST, postsGET, postsPUT, postsDELETE } = require( '../controllers/postsControl.js');
+const express = require("express");
 
 const postsRouter = express.Router();
 postsRouter.get('/',postsGET); //get all posts
@@ -23,4 +23,4 @@ postsRouter.post('/', postsPOST); //make a post
 postsRouter.put('/:id', postsPUT); //update a post w id
 postsRouter.delete('/:id', postsDELETE); //delete a post w id
 
-export default postsRouter;
+module.exports = postsRouter;

@@ -1,5 +1,5 @@
-import asyncHandler from "express-async-handler";
-import { createPost, getPosts } from "../storages/queries.js";
+const asyncHandler = require("express-async-handler");
+const {createPost, getPosts} = require( "../storages/queries.js")
 /*
 '/posts':  (CRUD)
     - is the homepage
@@ -28,4 +28,4 @@ const postsDELETE = asyncHandler(async (req, res) => {
   //do stuff
 });
 
-export { postsPOST, postsGET, postsPUT, postsDELETE };
+module.exports = { postsPOST, postsGET, postsPUT, postsDELETE };

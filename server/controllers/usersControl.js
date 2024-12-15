@@ -1,8 +1,8 @@
-import asyncHandler from "express-async-handler";
-import { body, validationResult } from "express-validator";
-import bcrypt from "bcrypt";
-import { createUser, getUser_username } from "../storages/queries.js";
-import jwt from "jsonwebtoken";
+const asyncHandler = require("express-async-handler");
+const { body, validationResult } = require("express-validator");
+const bcrypt = require("bcrypt");
+const { createUser, getUser_username } = require("../storages/queries.js");
+const jwt = require("jsonwebtoken");
 
 //get /:id, show user profile and their comments
 //post , create a user profile
@@ -66,20 +66,21 @@ const usersLOGIN = asyncHandler(async (req, res) => {
     return res.send(JSON.stringify({ error: "User does not exist" }));
   } else {
     bcrypt.compare(req.body.password, user.password, (err, result) => {
-      if (err)
-          return;
+      if (err) return;
 
       if (result) {
         console.log("match");
 
-        const data = {userid: user.userid, username: user.username, email: user.email}
-        jwt.sign(data, process.env.JWTKEY, (err,token) =>{
-          if (err)
-            console.log("error at jwtToken stuffs");
-          res.json({token});
+        const data = {
+          userid: user.userid,
+          username: user.username,
+          email: user.email,
+        };
+        jwt.sign(data, process.env.JWTKEY, (err, token) => {
+          if (err) console.log("error at jwtToken stuffs");
+          res.json({ token });
         });
-      }
-      else {
+      } else {
         console.log("wrong passwrod");
         return res.send(JSON.stringify({ error: "Incorrect password" }));
       }
@@ -87,4 +88,4 @@ const usersLOGIN = asyncHandler(async (req, res) => {
   }
 });
 
-export { usersGET, usersPOST, usersHOME, usersLOGIN, validateUser };
+module.exports = { usersGET, usersPOST, usersHOME, usersLOGIN, validateUser};

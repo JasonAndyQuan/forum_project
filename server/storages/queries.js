@@ -1,4 +1,4 @@
-import db from "./pool.js";
+const db = require("./pool.js");
 
 /* 
  
@@ -57,4 +57,4 @@ const filterPosts = async function (id) {
   return await db.query("SELECT * FROM POSTS WHERE authorid = $1", [id]);
 };
 
-export { createUser, createPost, createComment, getUser, getUser_username, getComments, getPosts, filterPosts };
+module.exports = { createUser, createPost, createComment, getUser, getUser_username, getComments, getPosts, filterPosts };
