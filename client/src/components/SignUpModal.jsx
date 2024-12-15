@@ -4,7 +4,6 @@ import { MdOutlineCancelPresentation } from "react-icons/md";
 
 const SignUpModal = ({ reveal, handleReveal }) => {
   const [errors, setErrors] = useState({
-    hasErrs: false,
     username: "",
     password: "",
     email: "",
@@ -15,7 +14,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
   const [password, setPassword] = useState("");
 
   const handleStyle = (bool) => {
-    setErrors({ hasErrs: false, username: "", password: "", email: "" });
+    setErrors({ username: "", password: "", email: "" });
     setSignUp(bool);
   };
   const handleSubmit = async (event) => {
@@ -32,11 +31,11 @@ const SignUpModal = ({ reveal, handleReveal }) => {
             }
             return acc;
           },
-          { hasErrs: true, username: "", password: "", email: "" }
+          {username: "", password: "", email: "" }
         );
         setErrors(errs);
       } else {
-        setErrors({ hasErrs: false, username: "", password: "", email: "" });
+        setErrors({username: "", password: "", email: "" });
       }
       if (errors.length === 0) {
         handleReveal();
@@ -46,10 +45,15 @@ const SignUpModal = ({ reveal, handleReveal }) => {
       const result = await loginUser(username, password);
       console.log(result);  
       if (!result){
+        const errs = {
+          username: "Try again",
+          password: "Try again",
+        }
+        setErrors(errs);
         console.log("login failed");
       } else {
         console.log("login success");
-        handleReveal();
+        window.location.reload()
       }
     }
     event.target.reset();

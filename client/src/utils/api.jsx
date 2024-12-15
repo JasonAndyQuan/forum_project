@@ -64,5 +64,15 @@ const getSession = async function(){
     console.log(err);
   }
 }
-
-export { getPosts, createUser, loginUser, getSession };
+const logOut = async function(){
+  try{
+    const result = await fetch("http://localhost:3000/logout", {
+      method: "POST",
+      credentials: "include"
+    });
+    return await result;
+  }catch(err){
+    console.log(err);
+  }
+}
+export { getPosts, createUser, loginUser, getSession, logOut };

@@ -46,6 +46,12 @@ app.get("/sesh", (req,res) => {
   load.date = req.user.date;
   return res.json({user:load});
 })
+app.post("/logout",(req,res)=>{
+  req.logOut((err) => {
+    if (!err)
+      return res.json({errors : err});
+  });
+})
 app.use("/users", usersRouter);
 app.get("/hello", (req,res) => {
   return res.json({hi: req.user});

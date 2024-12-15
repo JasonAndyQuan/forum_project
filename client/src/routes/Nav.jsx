@@ -4,24 +4,31 @@ import { IoMdHome } from "react-icons/io";
 import { useState, useEffect } from "react";
 import AuthButton from "../components/AuthButton";
 import SignUpModal from "../components/SignUpModal";
-import { getSession } from "../utils/api";
+import { getSession, logOut } from "../utils/api";
 
 const Nav = () => {
   const [reveal, setReveal] = useState(false);
-  const [auth, setAuth] = useState(null); //false -> login / signup  true -> logout
+  const [auth, setAuth] = useState({ username: "" }); //false -> login / signup  true -> logout
 
+  const handleLogOut = async () => {
+    await logOut();
+    resetAuth();
+  };
+  const resetAuth = () => {
+    setAuth({ username: "" });
+  };
   useEffect(() => {
     const checker = async () => {
-      const check = await getSession();
-      console.log(check);
-      if (!check) {
-        setAuth(null);
+      const { user } = await getSession();
+      console.log(user);
+      if (!user) {
+        resetAuth();
       } else {
-        setAuth(check);
+        setAuth(user);
       }
     };
-    console.log("called");
     checker();
+    console.log(auth);
   }, []);
 
   const handleReveal = () => {
@@ -29,13 +36,9 @@ const Nav = () => {
     setReveal(bool);
   };
 
-
   return (
     <>
-      <SignUpModal
-        reveal={reveal}
-        handleReveal={handleReveal}
-      />
+      <SignUpModal reveal={reveal} handleReveal={handleReveal} />
       <div className="h-[50px] bg-[#1E1627] w-[100%] flex items-center justify-between p-5 pt-7">
         <div className="w-[5%] flex items-center justify-between">
           <Link to="/">
@@ -48,10 +51,14 @@ const Nav = () => {
           </div>
         </div>
         <div className="w-[15%]">
-          <AuthButton auth={auth} handleReveal={handleReveal} />
+          <AuthButton
+            auth={auth}
+            handleReveal={handleReveal}
+            handleLogOut={handleLogOut}
+          />
         </div>
       </div>
-      <Outlet context={{ reveal }} />
+      <Outlet context={{ reveal, auth }} />
     </>
   );
 };
