@@ -36,8 +36,10 @@ const createComment = async function (authorid, postid, content) {
 };
 
 const getUser = async function (id) {
-  return await db.query("SELECT * FROM users WHERE id = $1", [id]);
+  const {rows} = await db.query("SELECT * FROM users WHERE userid = $1", [id]);
+  return rows[0] //if user exists, return true
 };
+
 const getUser_username = async function (username) {
   const {rows} = await db.query("SELECT * FROM users WHERE username = $1", [username]);
   return rows[0] //if user exists, return true

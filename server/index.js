@@ -1,20 +1,55 @@
 require("dotenv").config();
 const home = require("./controllers/homeControl.js");
+const {
+  strat,
+  sessionAuth,
+  serializeUser,
+  deSerializeUser,
+} = require("./auth/auth.js");
 const postsRouter = require("./routes/postsRoutes.js");
 const usersRouter = require("./routes/usersRoutes.js");
+const passport = require("passport");
 
 const cors = require("cors");
 const express = require("express");
 const app = express();
 
-app.use(cors());
+app.use(sessionAuth);
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(strat);
+passport.serializeUser(serializeUser);
+passport.deserializeUser(deSerializeUser);
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", home);
+app.post("/login", passport.authenticate("local"), (req,res) => {
+  const load = {};
+  load.userid = req.user.userid;
+  load.username =req.user.username;
+  load.date = req.user.date;
+  res.json({user: load});
+});
 app.use("/posts", postsRouter);
+app.get("/sesh", (req,res) => {
+  console.log("called");
+  if (!req.user)
+      return res.json({user:null});
+  const load = {};
+  load.userid = req.user.userid;
+  load.username =req.user.username;
+  load.date = req.user.date;
+  return res.json({user:load});
+})
 app.use("/users", usersRouter);
-
+app.get("/hello", (req,res) => {
+  return res.json({hi: req.user});
+})
 app.listen(process.env.PORT, () => {
   console.log(`Server is now listening on port : ${process.env.PORT} !!!`);
 });

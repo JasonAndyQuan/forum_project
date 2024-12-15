@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { createUser, loginUser } from "../utils/api";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 
-const SignUpModal = ({ reveal, handleReveal, handleAuth }) => {
+const SignUpModal = ({ reveal, handleReveal }) => {
   const [errors, setErrors] = useState({
     hasErrs: false,
     username: "",
@@ -44,11 +44,12 @@ const SignUpModal = ({ reveal, handleReveal, handleAuth }) => {
     } else if (!signUp) {
       console.log("log in here");
       const result = await loginUser(username, password);
-      if (!result.token){
+      console.log(result);  
+      if (!result){
         console.log("login failed");
       } else {
-        
         console.log("login success");
+        handleReveal();
       }
     }
     event.target.reset();

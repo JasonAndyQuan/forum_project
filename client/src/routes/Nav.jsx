@@ -1,27 +1,41 @@
 import { Outlet, Link } from "react-router-dom";
 import { FaUserAlt } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AuthButton from "../components/AuthButton";
 import SignUpModal from "../components/SignUpModal";
+import { getSession } from "../utils/api";
 
 const Nav = () => {
-
   const [reveal, setReveal] = useState(false);
-  const [auth, setAuth] = useState(false); //false -> login / signup  true -> logout
+  const [auth, setAuth] = useState(null); //false -> login / signup  true -> logout
+
+  useEffect(() => {
+    const checker = async () => {
+      const check = await getSession();
+      console.log(check);
+      if (!check) {
+        setAuth(null);
+      } else {
+        setAuth(check);
+      }
+    };
+    console.log("called");
+    checker();
+  }, []);
 
   const handleReveal = () => {
     const bool = !reveal;
     setReveal(bool);
   };
-  const handleAuth = () => {
-    const bool = !auth;
-    setAuth(bool);
-  };
+
 
   return (
     <>
-      <SignUpModal reveal={reveal} handleReveal={handleReveal} handleAuth={handleAuth}/>
+      <SignUpModal
+        reveal={reveal}
+        handleReveal={handleReveal}
+      />
       <div className="h-[50px] bg-[#1E1627] w-[100%] flex items-center justify-between p-5 pt-7">
         <div className="w-[5%] flex items-center justify-between">
           <Link to="/">
@@ -34,10 +48,10 @@ const Nav = () => {
           </div>
         </div>
         <div className="w-[15%]">
-          <AuthButton auth={auth} handleReveal={handleReveal}/>
+          <AuthButton auth={auth} handleReveal={handleReveal} />
         </div>
       </div>
-      <Outlet context={{reveal}}/>
+      <Outlet context={{ reveal }} />
     </>
   );
 };

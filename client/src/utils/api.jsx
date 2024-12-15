@@ -35,8 +35,9 @@ const createUser = async function (username, email, password) {
 
 const loginUser = async function(username, password){
   try {
-    const result = await fetch("http://localhost:3000/users/login", {
+    const result = await fetch("http://localhost:3000/login", {
       method: "POST",
+      credentials: "include",
       headers:{
         "Content-Type": "application/json",
       },
@@ -45,11 +46,23 @@ const loginUser = async function(username, password){
         password,
       })
     })
-    // console.log(await result.json());
+    if (!result.ok) {
+      throw new Error(`Login failed: ${result.status} ${result.statusText}`);
+    }
     return await result.json();
   } catch (error){
     console.log(error);
   }
 }
+const getSession = async function(){
+  try{
+    const result = await fetch("http://localhost:3000/sesh",{
+      credentials: "include",
+    });
+    return result.json();
+  } catch (err){
+    console.log(err);
+  }
+}
 
-export { getPosts, createUser, loginUser };
+export { getPosts, createUser, loginUser, getSession };
