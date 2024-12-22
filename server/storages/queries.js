@@ -21,17 +21,17 @@ const createUser = async function (email, username, password) {
     [email, username, password, "today"]
   );
 };
-const createPost = async function (authorid, title, content) {
+const createPost = async function (authorid, authorusername, title, content) {
   await db.query(
-    "INSERT into posts (authorid, title, content, likes, published) VALUES ($1, $2, $3, $4, $5)",
-    [authorid, title, content, 0, "today"]
+    "INSERT into posts (authorid, title, content, likes, published, authorusername) VALUES ($1, $2, $3, $4, $5, $6)",
+    [authorid, title, content, 0, "today", authorusername]
   );
 };
 
-const createComment = async function (authorid, postid, content) {
+const createComment = async function (authorid, authorusername, postid, content) {
   await db.query(
-    "INSERT into comments (authorid, postid, content, likes, published) VALUES ($1, $2, $3, $4, $5)",
-    [authorid, postid, content, 0, "today"]
+    "INSERT into comments (authorid, postid, content, likes, published, authorusername) VALUES ($1, $2, $3, $4, $5, $6)",
+    [authorid, postid, content, 0, "today", authorusername]
   );
 };
 
@@ -47,16 +47,21 @@ const getUser_username = async function (username) {
 
 const getComments = async function (table, id) {
   const param = (table == "users") ? "authorid" : "postid";
-  return await db.query(`SELECT * FROM ${table} WHERE ${param} = $1`, [id]);
+  const {rows} = await db.query(`SELECT * FROM comments WHERE ${param} = $1`, [id]);
+  return rows;
 };
 
 const getPosts = async function () {
   const {rows} =  await db.query("SELECT * FROM posts")
   return rows;
 };
+const getPostSingle = async function (id) {
+  const {rows} =  await db.query("SELECT * FROM posts WHERE postid=$1",[id]);
+  return rows[0];
+};
 
 const filterPosts = async function (id) {
   return await db.query("SELECT * FROM POSTS WHERE authorid = $1", [id]);
 };
 
-module.exports = { createUser, createPost, createComment, getUser, getUser_username, getComments, getPosts, filterPosts };
+module.exports = { createUser, createPost, createComment, getUser, getUser_username, getComments, getPosts, getPostSingle, filterPosts };

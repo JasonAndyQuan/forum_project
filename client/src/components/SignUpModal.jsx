@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createUser, loginUser } from "../utils/api";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 
@@ -17,6 +17,22 @@ const SignUpModal = ({ reveal, handleReveal }) => {
     setErrors({ username: "", password: "", email: "" });
     setSignUp(bool);
   };
+
+  const handleLogin = async () => {
+    const result = await loginUser(username, password);
+    console.log(result);  
+    if (!result){
+      const errs = {
+        username: "Try again",
+        password: "Try again",
+      }
+      setErrors(errs);
+      console.log("login failed");
+    } else {
+      console.log("login success");
+      window.location.reload()
+    }
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (signUp) {
@@ -38,30 +54,19 @@ const SignUpModal = ({ reveal, handleReveal }) => {
         setErrors({username: "", password: "", email: "" });
       }
       if (errors.length === 0) {
+        console.log("success");
         handleReveal();
       }
     } else if (!signUp) {
       console.log("log in here");
-      const result = await loginUser(username, password);
-      console.log(result);  
-      if (!result){
-        const errs = {
-          username: "Try again",
-          password: "Try again",
-        }
-        setErrors(errs);
-        console.log("login failed");
-      } else {
-        console.log("login success");
-        window.location.reload()
-      }
+      await handleLogin();
     }
     event.target.reset();
   };
 
   const topBoxStyles =
     "p-3 rounded-t-lg rounded-tr-lg hover:cursor-pointer hover:bg-[#342744] duration-200 ";
-  const textBoxStyle = "text-black rounded-lg h-[75%] p-2";
+  const textBoxStyle = "text-black rounded-lg h-[75%] p-2 focus:outline-none";
 
   if (reveal)
     return (

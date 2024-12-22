@@ -42,6 +42,7 @@ posts
 ----------
 postID                                      SERIAL
 authorID (join with userId)                 int
+authorusername                              VARCHAR(30)
 title                                       VARCHAR(50)
 content                                     text
 likes                                       int
@@ -54,6 +55,7 @@ comments
 -----------
 commentID                                   SERIAL
 authorID (joined with postId and userId)    int
+authorusername                              VARCHAR(30)
 postID (joined with postId and userId)      int
 content                                     VARCHAR(300)
 likes                                       int

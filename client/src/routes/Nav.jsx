@@ -39,26 +39,29 @@ const Nav = () => {
   return (
     <>
       <SignUpModal reveal={reveal} handleReveal={handleReveal} />
-      <div className="h-[50px] bg-[#1E1627] w-[100%] flex items-center justify-between p-5 pt-7">
-        <div className="w-[5%] flex items-center justify-between">
-          <Link to="/">
-            <IoMdHome size="2rem" className="hover:fill-[#e2e2b6a9]" />
-          </Link>
-          <div>
-            <Link to="/">
-              <FaUserAlt size="1.5rem" className="hover:fill-[#e2e2b6a9]" />
-            </Link>
+      <div className="bg-[#281E34] h-screen flex flex-col">
+        <div className="h-[50px] bg-[#1E1627] w-[100%] flex items-center justify-between p-5 pt-7">
+          <div className="w-[5%] flex items-center justify-between">
+            <a href="/">
+              <IoMdHome size="2rem" className="hover:fill-[#e2e2b6a9]" />
+            </a>
+            <div>
+              <Link to="/">
+                <FaUserAlt size="1.5rem" className="hover:fill-[#e2e2b6a9]" />
+              </Link>
+            </div>
+          </div>
+          <div className="w-[15%]">
+            <AuthButton
+              auth={auth}
+              handleReveal={handleReveal}
+              handleLogOut={handleLogOut}
+            />
           </div>
         </div>
-        <div className="w-[15%]">
-          <AuthButton
-            auth={auth}
-            handleReveal={handleReveal}
-            handleLogOut={handleLogOut}
-          />
-        </div>
+        <Outlet context={{ reveal, auth }} />
+        <div className="h-1 w-full"> </div>
       </div>
-      <Outlet context={{ reveal, auth }} />
     </>
   );
 };
