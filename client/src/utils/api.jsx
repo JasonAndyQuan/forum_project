@@ -118,6 +118,24 @@ const createPost = async function (title, content) {
   }
 };
 
+const createComment = async function (content, postPath) {
+  try {
+    console.log(postPath);
+    const result = fetch(`http://localhost:3000${postPath}/comments`, {
+      method: "POST",
+      credentials: "include",
+      headers:{
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify({
+        content: content
+      })
+    })
+  } catch (err){
+    console.log(err);
+  }
+}
+
 export {
   getPosts,
   getPost,
@@ -127,4 +145,5 @@ export {
   getComments,
   logOut,
   createPost,
+  createComment
 };

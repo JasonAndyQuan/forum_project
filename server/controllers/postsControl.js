@@ -45,9 +45,16 @@ const postComments = asyncHandler(async(req,res)=>{
   res.json(comments);
 })
 const postCommentsPost = asyncHandler(async (req,res)=>{
+  
+  console.log("comments created");  
+  if (!req.user){
+    console.log("no req.user here");
+    return res.json({errors: ["Must be logged in"]})
+  }
   await createComment(req.user.userid, req.user.username, req.params.id, req.body.content);
-  res.send("created");
+  res.json({errors: []})
 })
+
 const postSingle = asyncHandler(async(req,res) => {
   res.json(await getPostSingle(req.params.id));
 });

@@ -17,7 +17,7 @@ const CreatePostModal = ({ handleSelect }) => {
     return (
         <div className="fixed inset-0 bg-opacity-30 backdrop-blur-lg flex justify-center items-center">
         <div className="bg-[#1E1627] aspect-square w-[35%] h-auto p-4 flex flex-col items-center rounded-lg">
-            <div className="h-[10%] w-full flex justify-between items-center font-bold text-xl text-gray-400">
+            <div className="h-[10%] w-full flex justify-between items-center font-bold text-xl text-gray-400  ">
             {"Create Post"}
             <MdOutlineCancelPresentation
                 className="text-4xl transition-all hover:fill-red-500 duration-200 cursor-pointer"
@@ -27,7 +27,7 @@ const CreatePostModal = ({ handleSelect }) => {
                 }}
             />
             </div>
-            <div className="w-full h-[80%] p-1 bg-[#281E34] mb-2 max-w-full">
+            <div className="w-full h-[80%] p-1 bg-[#281E34] mb-2 max-w-full rounded-lg">
             <div className="h-[10%] w-full border-b-[3px] border-[#342744]">
                 <input
                 name="title"
