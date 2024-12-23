@@ -1,6 +1,6 @@
 import { getPosts } from "../utils/api";
 import { useState, useEffect } from "react";
-import { useOutletContext, Outlet } from "react-router-dom";
+import { useOutletContext, Outlet, useLocation } from "react-router-dom";
 import ButtonsBox from "../components/ButtonsBox";
 import PostContainer from "../components/PostContainer";
 import CreatePostModal from "../components/CreatePostModal";
@@ -10,6 +10,8 @@ const Home = () => {
   const [selected, setSelected] = useState(0); //0 for default,
   const { reveal } = useOutletContext(); //1 for a selected post
   // 2 for create post modal
+
+  const { pathname } = useLocation();
 
   window.addEventListener("popstate", (event) => {
     handleSelect(0);
@@ -28,8 +30,12 @@ const Home = () => {
       const postsList = await getPosts();
       handlePosts(postsList);
     };
-    fetchPosts();
-  }, []);
+    if (pathname == "/") {
+      fetchPosts();
+    } else {
+      handleSelect(1);
+    }
+  }, [pathname]);
 
   return (
     <>
