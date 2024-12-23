@@ -7,9 +7,13 @@ import CreatePostModal from "../components/CreatePostModal";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
-  const [selected, setSelected] = useState(false); //0 for default,
-  const { reveal } = useOutletContext();           //1 for a selected post
-                                                  // 2 for create post modal
+  const [selected, setSelected] = useState(0); //0 for default,
+  const { reveal } = useOutletContext(); //1 for a selected post
+  // 2 for create post modal
+
+  window.addEventListener("popstate", (event) => {
+    handleSelect(0);
+  });
 
   const handlePosts = (postList) => {
     setPosts(postList);
@@ -32,7 +36,7 @@ const Home = () => {
       <div className="bg-[#281E34] w-[100%] h-screen flex p-5 gap-5 overflow-auto">
         {selected == 1 ? (
           <Outlet context={{ handleSelect }} />
-        ) : selected == 0 ?(
+        ) : selected == 0 ? (
           <>
             <div className="w-[80%] flex flex-col p-3 ">
               {posts.length != 0 ? (
@@ -50,8 +54,14 @@ const Home = () => {
               )}
             </div>
           </>
-        ) : <CreatePostModal handleSelect={handleSelect}/> }
-        {(reveal || selected == 2) ? <div> </div> : <ButtonsBox handleSelect={handleSelect}/>}
+        ) : (
+          <CreatePostModal handleSelect={handleSelect} />
+        )}
+        {reveal || selected == 2 ? (
+          <div> </div>
+        ) : (
+          <ButtonsBox handleSelect={handleSelect} />
+        )}
       </div>
     </>
   );

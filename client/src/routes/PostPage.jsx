@@ -2,11 +2,14 @@ import { useLocation, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getPost, getComments } from "../utils/api";
 import { IoMdClose } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import CommentContainer from "../components/CommentContainer";
 
 
 
 const PostPage = () => {
+
+  const navigate = useNavigate();
   const { handleSelect } = useOutletContext();
   const { pathname } = useLocation();
   const [post, setPost] = useState({
@@ -36,6 +39,7 @@ const PostPage = () => {
       <div
         className="hover:cursor-pointer hover:bg-red-900 duration-200 h-[5%] p-4 flex justify-center items-center border-b-2 border-t-2 border-[#453750]"
         onClick={() => {
+          navigate(-1)
           handleSelect(0);
         }}
       >
