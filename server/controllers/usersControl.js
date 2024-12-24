@@ -1,7 +1,12 @@
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
-const { createUser, getUser_username } = require("../storages/queries.js");
+const {
+  createUser,
+  getUser_username,
+  getUserData,
+  getUser,
+} = require("../storages/queries.js");
 
 //get /:id, show user profile and their comments
 //post , create a user profile
@@ -35,15 +40,20 @@ const validateUser = () => [
     .normalizeEmail(),
 ];
 
+
+const usersGET = asyncHandler(async (req, res) => {
+  const result = await getUserData(req.params.id);
+  
+  //err handling here;
+  return res.json(result);
+});
+
 const usersHOME = asyncHandler((req, res) => {
   //sign up stuffs
   console.log("I am users GET ALL");
   res.send(`I am users GET ALL`);
 });
-const usersGET = asyncHandler((req, res) => {
-  console.log("I am users GET");
-  res.send(`I am users GET with Param ${req.params.id}`);
-});
+
 const usersPOST = asyncHandler(async (req, res) => {
   const result = validationResult(req);
   console.log(result);
@@ -59,4 +69,9 @@ const usersPOST = asyncHandler(async (req, res) => {
   return res.send(JSON.stringify(result));
 });
 
-module.exports = { usersGET, usersPOST, usersHOME, validateUser};
+module.exports = {
+  usersGET,
+  usersPOST,
+  usersHOME,
+  validateUser,
+};

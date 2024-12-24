@@ -131,7 +131,19 @@ const createComment = async function (content, postPath) {
         content: content
       })
     })
+    //return result.json();
   } catch (err){
+    console.log(err);
+  }
+}
+const getUserData = async function(path) {
+  try{
+    const response = await fetch(`http://localhost:3000${path}`, {
+      credentials: "include"
+    })
+    if (response.ok)
+        return await response.json();
+  }catch(err){
     console.log(err);
   }
 }
@@ -145,5 +157,6 @@ export {
   getComments,
   logOut,
   createPost,
-  createComment
+  createComment,
+  getUserData
 };

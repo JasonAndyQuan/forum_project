@@ -28,7 +28,6 @@ const PostPage = () => {
     };
     const fetchComments = async () => {
       const comments = await getComments(pathname);
-      console.log(comments);
       setComments(comments.reverse());
     };
     fetchPosts();

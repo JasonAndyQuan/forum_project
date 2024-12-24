@@ -8,6 +8,7 @@ const AboutPage = () => {
                         <li><span className="font-semibold">Frontend:</span> Vite React + TailwindCSS</li>
                         <li><span className="font-semibold">Backend:</span> Postgres + Node + Express</li>
                         <li><span className="font-semibold">User Authentication:</span> Passport-local + bcrypt + express-validator + express-session</li>
+                        <li><span className="font-semibold">Other:</span> React-Router-Dom </li>
                     </ul>
                 </div>
             </div>
