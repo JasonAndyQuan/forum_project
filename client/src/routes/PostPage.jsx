@@ -53,9 +53,8 @@ const PostPage = () => {
             {" "}
             {post.title}
             <div className="text-sm font-normal text-gray-200">
-              {" "}
-              {post.authorusername}{" "}
-            </div>
+              <Link to={`/users/${post.authorid}`} className="hover:text-gray-500 text-gray-300">{post.authorusername}</Link>
+              </div>
           </div>
           <div className="h-[75%] text-gray-300 p-5"> {post.content} </div>
         </div>

@@ -46,7 +46,7 @@ const Nav = () => {
               <IoMdHome size="2rem" className="hover:fill-[#e2e2b6a9]" />
             </a>
             <div>
-              <Link to="/">
+              <Link to={`/users/${auth.userid}`}>
                 <FaUserAlt size="1.5rem" className="hover:fill-[#e2e2b6a9]" />
               </Link>
             </div>

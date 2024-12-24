@@ -6,8 +6,8 @@ const CommentContainer = ({ comment }) => {
     <>
       <div className="border-t-2 p-3 last:border-b-2 h-[30%] w-[100%] bg-[#281E34] border-[#342744] flex flex-col">
         <div className="w-full h-[20%] p-2 flex justify-between">
-          {comment.authorusername}
-          <div className="flex items-center gap-2">
+        <Link to={`/users/${comment.authorid}`} className="hover:text-gray-500">{comment.authorusername}</Link>
+        <div className="flex items-center gap-2">
             {timeAgo(comment.published)}
           </div>
         </div>

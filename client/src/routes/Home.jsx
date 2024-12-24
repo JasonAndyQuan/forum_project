@@ -28,7 +28,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       const postsList = await getPosts();
-      handlePosts(postsList);
+      handlePosts(postsList.reverse());
     };
     if (pathname == "/") {
       fetchPosts();
