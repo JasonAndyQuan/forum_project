@@ -16,6 +16,7 @@ const PostPage = () => {
 
   const handleCreate = async () => {
     const response = await createComment(creator, pathname);
+    window.location.reload();
     console.log(response);
   };
 
@@ -28,7 +29,7 @@ const PostPage = () => {
     const fetchComments = async () => {
       const comments = await getComments(pathname);
       console.log(comments);
-      setComments(comments);
+      setComments(comments.reverse());
     };
     fetchPosts();
     fetchComments();

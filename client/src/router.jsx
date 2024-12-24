@@ -5,6 +5,7 @@ import Nav from "./routes/Nav.jsx";
 import AboutPage from "./routes/about.jsx";
 import ErrorPage from "./routes/ErrorPage.jsx";
 import PostPage from "./routes/PostPage.jsx";
+import UserPage from "./routes/userPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,10 @@ const router = createBrowserRouter([
         path:"/about",
         element: <AboutPage />
       },
-
+      {
+        path:"/user/:id",
+        element: <UserPage />
+      }
     ],
   },
 ]);

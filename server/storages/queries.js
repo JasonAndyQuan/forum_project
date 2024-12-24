@@ -23,15 +23,15 @@ const createUser = async function (email, username, password) {
 };
 const createPost = async function (authorid, authorusername, title, content) {
   await db.query(
-    "INSERT into posts (authorid, title, content, likes, published, authorusername) VALUES ($1, $2, $3, $4, $5, $6)",
-    [authorid, title, content, 0, "today", authorusername]
+    "INSERT into posts (authorid, title, content, published, authorusername) VALUES ($1, $2, $3, $4, $5)",
+    [authorid, title, content, "today", authorusername]
   );
 };
 
 const createComment = async function (authorid, authorusername, postid, content) {
   await db.query(
-    "INSERT into comments (authorid, postid, content, likes, published, authorusername) VALUES ($1, $2, $3, $4, $5, $6)",
-    [authorid, postid, content, 0, "today", authorusername]
+    "INSERT into comments (authorid, postid, content, published, authorusername) VALUES ($1, $2, $3, $4, $5)",
+    [authorid, postid, content, "today", authorusername]
   );
 };
 
