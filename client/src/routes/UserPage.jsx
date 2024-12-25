@@ -67,14 +67,14 @@ const UserPage = () => {
               ? userData.posts.map((post) => {
                   return (
                     <div className="last:border-b-2 border-[#342744]">
-                      <PostContainer post={post} styles={""}/>
+                      <PostContainer post={post} styles={""} key={post.postid}/>
                     </div>
                   );
                 })
               : userData.comments.map((comment) => {
                   return (
                     <div className="last:border-b-2 border-[#342744]">
-                      <CommentContainer comment={comment} styles={""}/>
+                      <CommentContainer comment={comment} styles={""} key={comment.commentid}/>
                     </div>
                   );
                 })}
