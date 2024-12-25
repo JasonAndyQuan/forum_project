@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import timeAgo from "../utils/dates";
 
-const PostContainer = ({ post, handleSelect }) => {
+const PostContainer = ({ post, handleSelect, styles }) => {
   return (
     <>
       <Link
@@ -9,7 +9,7 @@ const PostContainer = ({ post, handleSelect }) => {
         onClick={() => {
           handleSelect(true);
         }}
-        className="border-t-2 p-3 last:border-b-2 h-[30%] w-[100%] hover:bg-[#2E233C] border-[#342744] flex flex-col"
+        className={`border-t-2 p-3 ${styles} h-[30%] w-[100%] hover:bg-[#2E233C] border-[#342744] flex flex-col`}
       >
         <div className="h-[20%] p-1 text-2xl font-[550] flex justify-between items-center">
           {" "}

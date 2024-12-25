@@ -42,7 +42,7 @@ const PostPage = () => {
         onClick={() => {
           handleSelect(0);
         }}
-        to = "/"
+        to="/"
       >
         <IoMdClose />
       </Link>
@@ -52,8 +52,13 @@ const PostPage = () => {
             {" "}
             {post.title}
             <div className="text-sm font-normal text-gray-200">
-              <Link to={`/users/${post.authorid}`} className="hover:text-gray-500 text-gray-300">{post.authorusername}</Link>
-              </div>
+              <Link
+                to={`/users/${post.authorid}`}
+                className="hover:text-gray-500 text-gray-300"
+              >
+                {post.authorusername}
+              </Link>
+            </div>
           </div>
           <div className="h-[75%] text-gray-300 p-5"> {post.content} </div>
         </div>
@@ -62,12 +67,14 @@ const PostPage = () => {
           <textarea
             placeholder="Leave a comment ... "
             className="w-[95%] bg-[#281E34] focus:outline-none p-2 h-full rounded-md"
-            onChange = {(e)=>{setCreator(e.target.value)}}
+            onChange={(e) => {
+              setCreator(e.target.value);
+            }}
           />
-          <div 
-          className="w-[5%] h-full flex justify-center items-center duration-200 text-[#453750] text-2xl bg-transparent hover:bg-green-600 hover:cursor-pointer hover:text-gray-300 border-2 border-[#453750]"
-          onClick={handleCreate}
-          >          
+          <div
+            className="w-[5%] h-full flex justify-center items-center duration-200 text-[#453750] text-2xl bg-transparent hover:bg-green-600 hover:cursor-pointer hover:text-gray-300 border-2 border-[#453750]"
+            onClick={handleCreate}
+          >
             {"►"}
           </div>
         </div>
@@ -76,7 +83,11 @@ const PostPage = () => {
           {comments.length != 0
             ? comments.map((comment) => {
                 return (
-                  <CommentContainer key={comment.commentid} comment={comment} />
+                  <CommentContainer
+                    key={comment.commentid}
+                    comment={comment}
+                    styles={"last:border-b-2"}
+                  />
                 );
               })
             : "Comment section is empty"}

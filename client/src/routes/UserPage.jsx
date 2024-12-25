@@ -32,9 +32,9 @@ const UserPage = () => {
   //not selected: "bg-[#281E34]"
 
   const bStyles =
-    "hover:cursor-pointer hover:bg-[#342744] duration-200 p-2 text-center grow border-[#342744] ";
+    "duration-200 p-2 text-center grow border-[#342744] ";
   const toggled = " bg-[#281E34] border-2 border-b-0";
-  const untoggled = " bg-[#2E233C] border-b-2";
+  const untoggled = " bg-[#2E233C] border-b-2 hover:cursor-pointer hover:bg-[#342744] ";
 
   console.log(pathname);
   return (
@@ -62,19 +62,19 @@ const UserPage = () => {
               }}
             >{`Comments (${userData.comments.length})`}</div>
           </div>
-          <div className="bg-[] grow p-2 border-[#342744] border-2 border-t-0">
+          <div className="bg-transparent grow p-3 border-[#342744] border-2 border-t-0">
             {view
               ? userData.posts.map((post) => {
                   return (
-                    <div className="max-h-[20%]">
-                      <PostContainer post={post} />
+                    <div className="last:border-b-2 border-[#342744]">
+                      <PostContainer post={post} styles={""}/>
                     </div>
                   );
                 })
               : userData.comments.map((comment) => {
                   return (
-                    <div className="max-h-[20%]">
-                      <CommentContainer comment={comment}/>
+                    <div className="last:border-b-2 border-[#342744]">
+                      <CommentContainer comment={comment} styles={""}/>
                     </div>
                   );
                 })}

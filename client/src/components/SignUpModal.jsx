@@ -65,7 +65,13 @@ const SignUpModal = ({ reveal, handleReveal }) => {
   };
 
   const topBoxStyles =
-    "p-3 rounded-t-lg rounded-tr-lg hover:cursor-pointer hover:bg-[#342744] duration-200 ";
+    "p-3 rounded-t-lg rounded-tr-lg  duration-200 ";
+  
+    const toggled = "bg-[#342744]";
+    const untoggled = " bg-[#281E34] hover:cursor-pointer hover:bg-[#342744]";
+
+
+
   const textBoxStyle = "text-black rounded-lg h-[75%] p-2 focus:outline-none";
 
   if (reveal)
@@ -76,7 +82,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
             <div className="flex w-[45%]">
               <div
                 className={`${topBoxStyles} ${
-                  signUp ? "bg-[#342744] " : "bg-[#281E34]"
+                  signUp ? toggled  : untoggled
                 }`}
                 onClick={() => {
                   handleStyle(true);
@@ -86,7 +92,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
               </div>
               <div
                 className={`${topBoxStyles} ${
-                  signUp ? "bg-[#281E34]" : "bg-[#342744] "
+                  signUp ? untoggled : toggled 
                 } w-[40%] text-center`}
                 onClick={() => {
                   handleStyle(false);

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import timeAgo from "../utils/dates";
 
-const CommentContainer = ({ comment }) => {
+const CommentContainer = ({ comment, styles }) => {
   return (
     <>
-      <div className="border-t-2 p-3 last:border-b-2 h-[30%] w-[100%] border-[#342744] flex flex-col">
+      <div className={`border-t-2 p-3 ${styles} h-[30%] w-[100%] border-[#342744] flex flex-col`}>
         <div className="w-full h-[20%] p-2 flex justify-between  text-lg">
           {comment.authorusername ? (
             <Link

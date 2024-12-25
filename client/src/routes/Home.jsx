@@ -51,6 +51,7 @@ const Home = () => {
                     <PostContainer
                       post={post}
                       key={post.postid}
+                      styles={"last:border-b-2"}
                       handleSelect={handleSelect}
                     />
                   );
