@@ -16,14 +16,13 @@ const PostPage = () => {
 
   const handleCreate = async () => {
     const response = await createComment(creator, pathname);
-    window.location.reload();
     console.log(response);
+    // window.location.reload();
   };
 
   useEffect(() => {
     const fetchPosts = async () => {
       const post = await getPost(pathname);
-      console.log(post);
       setPost(post);
     };
     const fetchComments = async () => {

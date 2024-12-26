@@ -1,6 +1,12 @@
 const asyncHandler = require("express-async-handler");
-const {createPost, getPosts, getPostSingle, getComments, createComment} = require( "../storages/queries.js");
-const {body, validationResult} = require("express-validator");
+const {
+  createPost,
+  getPosts,
+  getPostSingle,
+  getComments,
+  createComment,
+} = require("../storages/queries.js");
+const { body, validationResult } = require("express-validator");
 /*
 '/posts':  (CRUD)
     - is the homepage
@@ -14,24 +20,47 @@ const {body, validationResult} = require("express-validator");
 // DELETE /posts/:id: Delete a post by ID
 */
 
+//post : 1000 char
+//comment : 300 char
+//post.title: 50 char
 
-
-/*
-const createPost = async function (authorid, authorusername, title, content) {
-  await db.query(
-    "INSERT into posts (authorid, title, content, likes, published, authorusername) VALUES ($1, $2, $3, $4, $5, $6)",
-    [authorid, title, content, 0, "today", authorusername]
-  );
+const validateContent = (isPost) => {
+  const validations = [
+    body("content")
+      .trim()
+      .isLength({ min: 1, max: isPost ? 1000 : 300 })
+      .withMessage(`Content must be 1 - ${isPost ? "1000" : "300"} characters.`)
+      .escape(),
+  ];
+  if (isPost) {
+    validations.push(
+      body("title")
+        .trim()
+        .isLength({ min: 1, max: 50 })
+        .withMessage("Title must be 1 - 50 characters.")
+        .escape()
+    );
+  }
+  return validations;
 };
 
-*/
 const postsPOST = asyncHandler(async (req, res) => {
-  if (!req.user){
+
+  const result = validationResult(req);
+  if (!result.isEmpty())
+    return res.json(result);
+  
+  if (!req.user) {
     console.log("no req.user here");
-    return res.json({errors: ["Must be logged in"]})
+    return res.json({ errors: ["Must be logged in"] });
   }
-  await createPost(req.user.userid, req.user.username, req.body.title, req.body.content);
-  res.json({errors: []})
+  await createPost(
+    req.user.userid,
+    req.user.username,
+    req.body.title,
+    req.body.content
+  );
+  res.json({ errors: [] });
 });
 
 const postsGET = asyncHandler(async (req, res) => {
@@ -40,22 +69,31 @@ const postsGET = asyncHandler(async (req, res) => {
   res.json(posts);
 });
 
-const postComments = asyncHandler(async(req,res)=>{
+const postComments = asyncHandler(async (req, res) => {
   const comments = await getComments("posts", req.params.id);
   res.json(comments);
-})
-const postCommentsPost = asyncHandler(async (req,res)=>{
+});
+const postCommentsPost = asyncHandler(async (req, res) => {
   
-  console.log("comments created");  
-  if (!req.user){
+  const result = validationResult(req);
+  if (!result.isEmpty())
+    return res.json(result);
+  
+  console.log("comments created");
+  if (!req.user) {
     console.log("no req.user here");
-    return res.json({errors: ["Must be logged in"]})
+    return res.json({ errors: ["Must be logged in"] });
   }
-  await createComment(req.user.userid, req.user.username, req.params.id, req.body.content);
-  res.json({errors: []})
-})
+  await createComment(
+    req.user.userid,
+    req.user.username,
+    req.params.id,
+    req.body.content
+  );
+  res.json({ errors: [] });
+});
 
-const postSingle = asyncHandler(async(req,res) => {
+const postSingle = asyncHandler(async (req, res) => {
   res.json(await getPostSingle(req.params.id));
 });
 const postsPUT = asyncHandler(async (req, res) => {
@@ -65,4 +103,13 @@ const postsDELETE = asyncHandler(async (req, res) => {
   //do stuff
 });
 
-module.exports = { postsPOST, postsGET, postsPUT, postsDELETE, postSingle, postComments, postCommentsPost };
+module.exports = {
+  postsPOST,
+  postsGET,
+  postsPUT,
+  postsDELETE,
+  postSingle,
+  postComments,
+  postCommentsPost,
+  validateContent,
+};

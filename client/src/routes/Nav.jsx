@@ -20,7 +20,7 @@ const Nav = () => {
   useEffect(() => {
     const checker = async () => {
       const { user } = await getSession();
-      console.log(user);
+      // console.log(user);
       if (!user) {
         resetAuth();
       } else {
@@ -28,7 +28,7 @@ const Nav = () => {
       }
     };
     checker();
-    console.log(auth);
+    // console.log(auth);
   }, []);
 
   const handleReveal = () => {

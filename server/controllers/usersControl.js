@@ -5,7 +5,6 @@ const {
   createUser,
   getUser_username,
   getUserData,
-  getUser,
 } = require("../storages/queries.js");
 
 //get /:id, show user profile and their comments
@@ -14,8 +13,6 @@ const {
 const validateUser = () => [
   body("username")
     .trim()
-    .notEmpty()
-    .withMessage("Username is required")
     .isLength({ min: 3, max: 25 })
     .withMessage("Must be 3 - 25 chars")
     .custom(async (username) => {
@@ -26,15 +23,11 @@ const validateUser = () => [
     .escape(),
   body("password")
     .trim()
-    .notEmpty()
-    .withMessage("Password is required")
     .isLength({ min: 8 })
     .withMessage("Must be atleast 8 chars")
     .escape(),
   body("email")
     .trim()
-    .notEmpty()
-    .withMessage("Email is required")
     .isEmail()
     .withMessage("Must be an email")
     .normalizeEmail(),

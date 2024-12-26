@@ -3,18 +3,14 @@ import { createUser, loginUser } from "../utils/api";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 
 const SignUpModal = ({ reveal, handleReveal }) => {
-  const [errors, setErrors] = useState({
-    username: "",
-    password: "",
-    email: "",
-  });
+  const [errors, setErrors] = useState({});
   const [signUp, setSignUp] = useState(true);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleStyle = (bool) => {
-    setErrors({ username: "", password: "", email: "" });
+    setErrors({});
     setSignUp(bool);
   };
 
@@ -40,18 +36,16 @@ const SignUpModal = ({ reveal, handleReveal }) => {
       const { errors } = await createUser(username, email, password);
       console.log(errors);
       if (errors.length !== 0) {
-        const errs = errors.reduce(
-          (acc, err) => {
-            if (["username", "password", "email"].includes(err.path)) {
-              acc[err.path] = err.msg;
-            }
-            return acc;
-          },
-          {username: "", password: "", email: "" }
-        );
+        const errs = errors.reduce((acc,item) => {
+          acc[item.path] = item.msg;
+          return acc;
+        }, {})
         setErrors(errs);
+        setUsername("");
+        setPassword("");
+        setEmail("");
       } else {
-        setErrors({username: "", password: "", email: "" });
+        setErrors({});
       }
       if (errors.length === 0) {
         console.log("success");
@@ -63,15 +57,11 @@ const SignUpModal = ({ reveal, handleReveal }) => {
     }
     event.target.reset();
   };
-
   const topBoxStyles =
     "p-3 rounded-t-lg rounded-tr-lg  duration-200 ";
   
     const toggled = "bg-[#342744]";
     const untoggled = " bg-[#281E34] hover:cursor-pointer hover:bg-[#342744]";
-
-
-
   const textBoxStyle = "text-black rounded-lg h-[75%] p-2 focus:outline-none";
 
   if (reveal)
@@ -118,14 +108,17 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                   type="text"
                   name="username"
                   placeholder={`${
-                    errors.username == "" ? "usernameABC" : errors.username
+                    errors.username ? errors.username : "usernameABC"
                   }`}
                   className={`${textBoxStyle} ${
-                    errors.username == ""
-                      ? ""
-                      : "placeholder-red-500  border-2 border-red-500"
+                    errors.username
+                      
+                      ? "placeholder-red-500  border-2 border-red-500" : ""
                   }`}
                   onChange={(e) => setUsername(e.target.value)}
+                  onClick={()=>{
+                    setErrors({...errors,username:null});
+                  }}
                 ></input>
               </div>
 
@@ -136,14 +129,17 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                     type="text"
                     name="Email"
                     placeholder={`${
-                      errors.email == "" ? "J@example.com" : errors.email
+                      errors.email ? errors.email : "J@example.com"
                     }`}
                     className={`${textBoxStyle} ${
-                      errors.email == ""
-                        ? ""
-                        : "placeholder-red-500 border-2 border-red-500"
+                      errors.email
+                  
+                        ? "placeholder-red-500 border-2 border-red-500" :  ""
                     }`}
                     onChange={(e) => setEmail(e.target.value)}
+                    onClick={()=>{
+                      setErrors({...errors,email:null});
+                    }}
                   ></input>
                 </div>
               ) : (
@@ -156,14 +152,16 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                   type="text"
                   name="Password"
                   placeholder={`${
-                    errors.password == "" ? "onetwothree" : errors.password
+                    errors.password? errors.password : "onetwothree" 
                   }`}
                   className={`${textBoxStyle} ${
-                    errors.password == ""
-                      ? ""
-                      : "placeholder-red-500 border-2 border-red-500"
+                    errors.password
+                      ? "placeholder-red-500 border-2 border-red-500" : ""
                   }`}
                   onChange={(e) => setPassword(e.target.value)}
+                  onClick={()=>{
+                    setErrors({...errors,password:null});
+                  }}
                 ></input>
               </div>
               <button

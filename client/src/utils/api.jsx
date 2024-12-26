@@ -120,8 +120,7 @@ const createPost = async function (title, content) {
 
 const createComment = async function (content, postPath) {
   try {
-    console.log(postPath);
-    const result = fetch(`http://localhost:3000${postPath}/comments`, {
+    const result = await fetch(`http://localhost:3000${postPath}/comments`, {
       method: "POST",
       credentials: "include",
       headers:{
@@ -131,7 +130,11 @@ const createComment = async function (content, postPath) {
         content: content
       })
     })
-    //return result.json();
+    if (!result.ok) {
+      console.log("response createComment not ok");
+    } else {
+      return await result.json();
+    }  
   } catch (err){
     console.log(err);
   }
