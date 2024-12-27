@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { FaUserAlt } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
 import { useState, useEffect } from "react";
@@ -8,14 +8,15 @@ import { getSession, logOut } from "../utils/api";
 
 const Nav = () => {
   const [reveal, setReveal] = useState(false);
-  const [auth, setAuth] = useState({ username: "" }); //false -> login / signup  true -> logout
+  const [auth, setAuth] = useState({}); //false -> login / signup  true -> logout
+  const navigate = useNavigate();
 
   const handleLogOut = async () => {
     await logOut();
     resetAuth();
   };
   const resetAuth = () => {
-    setAuth({ username: "" });
+    setAuth({});
   };
   useEffect(() => {
     const checker = async () => {
@@ -28,9 +29,15 @@ const Nav = () => {
       }
     };
     checker();
-    // console.log(auth);
+    console.log(auth);
   }, []);
-
+  const handleProfileClick = () => {
+    if (auth.username) {
+      navigate(`/users/${auth.userid}`);
+    } else {
+      handleReveal();
+    }
+  }
   const handleReveal = () => {
     const bool = !reveal;
     setReveal(bool);
@@ -46,9 +53,9 @@ const Nav = () => {
               <IoMdHome size="2rem" className="hover:fill-[#e2e2b6a9]" />
             </a>
             <div>
-              <Link to={`/users/${auth.userid}`}>
+              <div onClick={handleProfileClick} className="hover:cursor-pointer">
                 <FaUserAlt size="1.5rem" className="hover:fill-[#e2e2b6a9]" />
-              </Link>
+              </div>
             </div>
           </div>
           <div className="w-[15%]">
@@ -59,7 +66,7 @@ const Nav = () => {
             />
           </div>
         </div>
-        <Outlet context={{ reveal, auth }} />
+        <Outlet context={{ reveal, auth, handleReveal }} />
         <div className="h-1 w-full"> </div>
       </div>
     </>
