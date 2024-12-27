@@ -25,7 +25,7 @@ const CommentContainer = ({ comment, styles }) => {
             {timeAgo(comment.published)}
           </div>
         </div>
-        <div className="w-full h-[80%] p-2 text-gray-300 text-md">
+        <div className="w-full h-[80%] p-2 text-gray-300 text-md whitespace-normal break-words">
           {comment.content}
         </div>
       </div>

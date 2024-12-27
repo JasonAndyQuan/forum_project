@@ -34,20 +34,13 @@ const validateUser = () => [
 ];
 
 
-const usersGET = asyncHandler(async (req, res) => {
+const getUserProfile = asyncHandler(async (req, res) => {
   const result = await getUserData(req.params.id);
-  
-  //err handling here;
-  return res.json(result);
+    return res.json(result);
 });
 
-const usersHOME = asyncHandler((req, res) => {
-  //sign up stuffs
-  console.log("I am users GET ALL");
-  res.send(`I am users GET ALL`);
-});
 
-const usersPOST = asyncHandler(async (req, res) => {
+const createUserProfile = asyncHandler(async (req, res) => {
   const result = validationResult(req);
   console.log(result);
   if (result.isEmpty()) {
@@ -63,8 +56,7 @@ const usersPOST = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  usersGET,
-  usersPOST,
-  usersHOME,
+  getUserProfile,
+  createUserProfile,
   validateUser,
 };

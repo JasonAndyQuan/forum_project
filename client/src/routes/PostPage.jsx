@@ -67,7 +67,7 @@ const PostPage = () => {
               </Link>
             </div>
           </div>
-          <div className="h-[75%] text-gray-300 p-5 text-base"> {post.content} </div>
+          <div className="h-[75%] text-gray-300 p-5 text-base whitespace-normal break-words"> {post.content} </div>
         </div>
 
         <div className="h-[25%] flex justify-between gap-2">

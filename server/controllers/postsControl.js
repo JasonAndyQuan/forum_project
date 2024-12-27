@@ -1,28 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const {
-  createPost,
-  getPosts,
-  getPostSingle,
-  getComments,
-  createComment,
-} = require("../storages/queries.js");
+const db = require("../storages/queries.js");
 const { body, validationResult } = require("express-validator");
-/*
-'/posts':  (CRUD)
-    - is the homepage
-    -> '/posts/:id/
-        - an individual text article
-
-// CRUD operations for '/posts'
-// POST /posts: Create a new post
-// GET /posts: Retrieve all posts
-// PUT /posts/:id: Update a post by ID
-// DELETE /posts/:id: Delete a post by ID
-*/
-
-//post : 1000 char
-//comment : 300 char
-//post.title: 50 char
 
 const validateContent = (isPost) => {
   const validations = [
@@ -44,8 +22,7 @@ const validateContent = (isPost) => {
   return validations;
 };
 
-const postsPOST = asyncHandler(async (req, res) => {
-
+const createPost = asyncHandler(async (req, res) => {
   const result = validationResult(req);
   if (!result.isEmpty())
     return res.json(result);
@@ -54,7 +31,7 @@ const postsPOST = asyncHandler(async (req, res) => {
     console.log("no req.user here");
     return res.json({ errors: ["Must be logged in"] });
   }
-  await createPost(
+  await db.createPost(
     req.user.userid,
     req.user.username,
     req.body.title,
@@ -63,18 +40,16 @@ const postsPOST = asyncHandler(async (req, res) => {
   res.json({ errors: [] });
 });
 
-const postsGET = asyncHandler(async (req, res) => {
-  const posts = await getPosts();
-  console.log("posts sent");
+const getAllPosts = asyncHandler(async (req, res) => {
+  const posts = await db.getPosts();
   res.json(posts);
 });
 
-const postComments = asyncHandler(async (req, res) => {
-  const comments = await getComments("posts", req.params.id);
+const getComments = asyncHandler(async (req, res) => {
+  const comments = await db.getComments("posts", req.params.id);
   res.json(comments);
 });
-const postCommentsPost = asyncHandler(async (req, res) => {
-  
+const createComment = asyncHandler(async (req, res) => {
   const result = validationResult(req);
   if (!result.isEmpty())
     return res.json(result);
@@ -84,7 +59,7 @@ const postCommentsPost = asyncHandler(async (req, res) => {
     console.log("no req.user here");
     return res.json({ errors: ["Must be logged in"] });
   }
-  await createComment(
+  await db.createComment(
     req.user.userid,
     req.user.username,
     req.params.id,
@@ -93,23 +68,23 @@ const postCommentsPost = asyncHandler(async (req, res) => {
   res.json({ errors: [] });
 });
 
-const postSingle = asyncHandler(async (req, res) => {
-  res.json(await getPostSingle(req.params.id));
+const getPost = asyncHandler(async (req, res) => {
+  res.json(await db.getPostSingle(req.params.id));
 });
-const postsPUT = asyncHandler(async (req, res) => {
+const updatePost = asyncHandler(async (req, res) => {
   //do stuff
 });
-const postsDELETE = asyncHandler(async (req, res) => {
+const deletePost = asyncHandler(async (req, res) => {
   //do stuff
 });
 
 module.exports = {
-  postsPOST,
-  postsGET,
-  postsPUT,
-  postsDELETE,
-  postSingle,
-  postComments,
-  postCommentsPost,
+  createPost,
+  getAllPosts,
+  updatePost,
+  deletePost,
+  getPost,
+  getComments,
+  createComment,
   validateContent,
 };

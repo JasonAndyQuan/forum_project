@@ -14,25 +14,27 @@
 */
 
 const {
-  postsPOST,
-  postsGET,
-  postsPUT,
-  postsDELETE,
-  postSingle,
-  postComments,
-  postCommentsPost,
+  createPost,
+  getAllPosts,
+  updatePost,
+  deletePost,
+  getPost,
+  getComments,
+  createComment,
   validateContent,
 } = require("../controllers/postsControl.js");
 const express = require("express");
 
 const postsRouter = express.Router();
-postsRouter.get("/", postsGET); //get all posts
-postsRouter.post("/", validateContent(true), postsPOST); //make a post
-postsRouter.get("/:id", postSingle); //get one post by id
-postsRouter.get("/:id/comments", postComments); //get comments by id
-postsRouter.post("/:id/comments", validateContent(false), postCommentsPost); //CREATE COMMENT
+postsRouter.get("/", getAllPosts); //get all posts
+postsRouter.post("/", validateContent(true), createPost); //make a post
+postsRouter.get("/:id", getPost); //get one post by id
+postsRouter.get("/:id/comments", getComments); //get comments by id
+postsRouter.post("/:id/comments", validateContent(false), createComment); //CREATE COMMENT
 
-postsRouter.put("/:id", postsPUT); //update a post w id
-postsRouter.delete("/:id", postsDELETE); //delete a post w id
+
+
+postsRouter.put("/:id", updatePost); //update a post w id
+postsRouter.delete("/:id", deletePost); //delete a post w id
 
 module.exports = postsRouter;

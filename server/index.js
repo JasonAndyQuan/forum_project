@@ -1,5 +1,4 @@
 require("dotenv").config();
-const home = require("./controllers/homeControl.js");
 const {
   strat,
   sessionAuth,
@@ -28,7 +27,6 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", home);
 app.post("/login", passport.authenticate("local"), (req,res) => {
   const load = {};
   load.userid = req.user.userid;
