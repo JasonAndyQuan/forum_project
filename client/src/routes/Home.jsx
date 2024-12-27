@@ -4,7 +4,6 @@ import { useOutletContext, Outlet, useLocation } from "react-router-dom";
 import ButtonsBox from "../components/ButtonsBox";
 import PostContainer from "../components/PostContainer";
 import CreatePostModal from "../components/CreatePostModal";
-import PostPage from "./PostPage";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -13,6 +12,7 @@ const Home = () => {
                                                                     // 2 for create post modal
 
   const { pathname } = useLocation();
+
 
   window.addEventListener("popstate", () => {
     handleSelect(0);

@@ -58,7 +58,6 @@ const SignUpModal = ({ reveal, handleReveal }) => {
     event.target.reset();
   };
   const topBoxStyles = "p-3 rounded-t-lg rounded-tr-lg  duration-200 ";
-
   const toggled = "bg-[#342744]";
   const untoggled = " bg-[#281E34] hover:cursor-pointer hover:bg-[#342744]";
   const textBoxStyle =
@@ -167,6 +166,19 @@ const SignUpModal = ({ reveal, handleReveal }) => {
               >
                 {signUp ? "Sign Up" : "Login"}
               </button>
+              {signUp ? (
+                <div></div>
+              ) : (
+                <div className="bg-[#281E34] rounded-lg p-3 ">
+                  <h1 className="border-b-2 border-gray-2"> Demo Credentials </h1>
+                  <div className="flex gap-1">
+                    <p> Username: </p> <p className="text-blue-400"> User123 </p>
+                  </div>
+                  <div className="flex gap-1">
+                    <p> Username: </p> <p className="text-green-400" > Password123 </p>
+                  </div>
+                </div>
+              )}
             </div>
           </form>
         </div>

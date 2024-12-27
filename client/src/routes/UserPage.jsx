@@ -40,7 +40,7 @@ const UserPage = () => {
   return (
     <div className="flex items-center h-screen justify-center p-2 overflow-y-auto">
       <div className=" w-[50%] h-full flex flex-col">
-        <div className="bg-[#2E233C] w-full h-[15%] p-2 flex border-2 border-[#342744] justify-between items-center mb-2">
+        <div className="bg-[#2E233C] w-full h-[15%] p-4 flex border-2 border-[#342744] justify-between items-center mb-2">
           <h1 className="text-2xl"> {userData.user.username} </h1>
           <h3> {` Joined: ${timeAgo(userData.user.date)}`} </h3>
         </div>

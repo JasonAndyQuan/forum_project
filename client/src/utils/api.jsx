@@ -11,9 +11,6 @@ const getPosts = async function () {
   }
 };
 const createUser = async function (username, email, password) {
-  // console.log (username);
-  // console.log(password);
-  // console.log(email);
   try {
     const result = await fetch("http://localhost:3000/users", {
       method: "POST",
