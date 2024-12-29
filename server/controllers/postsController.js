@@ -70,9 +70,17 @@ const getPost = asyncHandler(async (req, res) => {
   res.json(await db.getPostSingle(req.params.id));
 });
 const deletePost = asyncHandler(async (req, res) => {
-  const check = db.verifyCreator(req.params.id, req.user.userid);
+  const check = db.verifyCreator(req.params.id, req.user.userid, "posts");
   if (check) {
     db.deleteObject("posts", req.params.id);
+    return res.json({ msg: "Success" });
+  }
+  return res.json({ msg: "Unauthorized" });
+});
+const deleteComment = asyncHandler(async (req, res) => {
+  const check = db.verifyCreator(req.params.id, req.user.userid, "comments");
+  if (check) {
+    db.deleteObject("comments", req.params.id);
     return res.json({ msg: "Success" });
   }
   return res.json({ msg: "Unauthorized" });
@@ -90,4 +98,5 @@ module.exports = {
   validateContent,
   updatePost,
   deletePost,
+  deleteComment
 };

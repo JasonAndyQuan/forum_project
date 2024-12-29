@@ -66,7 +66,7 @@ const getUserData = async (id) => {
     [id]
   );
   const { rows: comments } = await db.query(
-    "SELECT commentid, comments.postid, comments.content, posts.title, comments.published FROM comments JOIN posts ON comments.postid = posts.postid WHERE comments.authorid = $1",
+    "SELECT comments.authorid, commentid, comments.postid, comments.content, posts.title, comments.published FROM comments JOIN posts ON comments.postid = posts.postid WHERE comments.authorid = $1",
     [id]
   );
   const { rows: users } = await db.query(
@@ -80,22 +80,27 @@ const getUserData = async (id) => {
 };
 
 const deleteObject = async (table, id) =>{
-  const param = (table == "users") ? "userid" : "postid";
+  const param = (table == "users") ? "userid" : (table =="posts") ? "postid" : "commentid";
 
-  if (table != "users" && table != "posts")
+  if (table != "users" && table != "posts" && table != "comments")
     return;
   
     await db.query(`DELETE FROM ${table} WHERE ${param} = $1`, [id]);
   if (table == "users") {
     await db.query("DELETE FROM posts WHERE authorid = $1", [id]);
     await db.query("DELETE FROM comments WHERE authorid = $1", [id]);
-  } else {
+  } else if (table == "posts"){
     await db.query("DELETE FROM comments WHERE postid = $1", [id]);
   }
 }
 
-const verifyCreator = async (postid, userid) => {
-  const {rows} = await db.query("SELECT authorid FROM posts WHERE postid=$1",[postid]);
+const verifyCreator = async (postid, userid, table) => {
+  if (table != "comments" && table != "posts")
+    return;
+  
+  const param = (table == "posts") ? "postid" : "commentid";
+  
+  const {rows} = await db.query(`SELECT authorid FROM ${table} WHERE ${param}=$1`,[postid]);
   if (rows[0].authorid == userid)
       return true;
   return false;

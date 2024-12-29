@@ -2,9 +2,7 @@ import { MdOutlineCancelPresentation } from "react-icons/md";
 const DeleteModal = ({ reveal, handleReveal, handleDelete, object }) => {
   //user or post
   const isUser = object.username ? true : false;
-
-  // (user/post) or comment
-  const areYouSure = !object.commentid ? (
+  const areYouSure = 
     <>
       {"Are you sure you want to delete this "} {isUser ? "user" : "post"}:
       <br />
@@ -16,9 +14,6 @@ const DeleteModal = ({ reveal, handleReveal, handleDelete, object }) => {
       {"Doing so will also delete any associated comments"}
       {isUser ? " and posts" : ""}.
     </>
-  ) : (
-    <>{"Are you sure you want to delete this comment ?"}</>
-  );
 
   if (reveal)
     return (

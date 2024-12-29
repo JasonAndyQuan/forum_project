@@ -171,6 +171,19 @@ const deletePost = async (path) => {
     console.log(err);
   }
 };
+const deleteComment = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:3000/posts/comments/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 export {
   getPosts,
   getPost,
@@ -183,5 +196,6 @@ export {
   createComment,
   getUserData,
   deleteUser,
-  deletePost
+  deletePost,
+  deleteComment
 };

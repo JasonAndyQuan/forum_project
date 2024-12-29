@@ -58,9 +58,6 @@ const PostPage = () => {
       navigate("/")
       console.log(response);
   }
-  const handleCommentDelete = async () => {
-      //delete
-  }
   
   return (
     <div className="bg-[#281E34] h-screen w-[80%] flex flex-col p-5">

@@ -7,6 +7,7 @@ const {
   getPost,
   getComments,
   createComment,
+  deleteComment,
   validateContent,
 } = require("../controllers/postsController.js");
 const express = require("express");
@@ -18,6 +19,7 @@ postsRouter.get("/:id", getPost); //get a post by its postid
 postsRouter.get("/:id/comments", getComments); //get comments by postid
 postsRouter.post("/:id/comments", validateContent(false), createComment); //create a comment
 postsRouter.delete("/:id", deletePost); //delete a post
+postsRouter.delete("/comments/:id", deleteComment); //delete a comment
 
 
 
