@@ -44,18 +44,18 @@ const SignUpModal = ({ reveal, handleReveal }) => {
         setUsername("");
         setPassword("");
         setEmail("");
+        event.target.reset();
       } else {
         setErrors({});
       }
       if (errors.length === 0) {
         console.log("success");
-        handleReveal();
+        handleStyle(false);
       }
     } else if (!signUp) {
       console.log("log in here");
       await handleLogin();
     }
-    event.target.reset();
   };
   const topBoxStyles = "p-3 rounded-t-lg rounded-tr-lg  duration-200 ";
   const toggled = "bg-[#342744]";
@@ -121,7 +121,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
               <div className="w-full">
                 <div>{"Password"}</div>
                 <input
-                  type="text"
+                  type={`${signUp ? "text" : "password"}`}
                   name="Password"
                   placeholder={`${
                     errors.password ? errors.password : "onetwothree"
