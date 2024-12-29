@@ -1,12 +1,15 @@
-import { useLocation, useOutletContext, Link } from "react-router-dom";
+import { useLocation, useOutletContext, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getPost, getComments, createComment } from "../utils/api";
+import { getPost, getComments, createComment, deletePost } from "../utils/api";
 import timeAgo from "../utils/dates";
 import { IoMdClose } from "react-icons/io";
 import CommentContainer from "../components/CommentContainer";
+import { FaTrashAlt } from "react-icons/fa";
+import DeleteModal from "../components/DeleteModal"
 
 const PostPage = () => {
-  const { handleSelect, handleReveal, auth } = useOutletContext();
+  const navigate = useNavigate();
+  const { handleSelect, handleReveal, auth, setBoxBlur } = useOutletContext();
   const { pathname } = useLocation();
   const [post, setPost] = useState({
     title: "No title",
@@ -16,6 +19,13 @@ const PostPage = () => {
   const [comments, setComments] = useState([]);
   const [creator, setCreator] = useState("");
   const [error, setError] = useState({});
+  const [modalReveal, setModalReveal] = useState(false);
+  
+  const handleModalReveal = () =>{
+    const bool = !modalReveal;
+    setBoxBlur(bool);
+    setModalReveal(bool);
+  }
 
   const handleCreate = async () => {
     if (auth.username) {
@@ -43,9 +53,18 @@ const PostPage = () => {
     fetchPosts();
     fetchComments();
   }, [pathname]);
-
+  const handlePostDelete = async () => {
+      const response = await deletePost(pathname);
+      navigate("/")
+      console.log(response);
+  }
+  const handleCommentDelete = async () => {
+      //delete
+  }
+  
   return (
     <div className="bg-[#281E34] h-screen w-[80%] flex flex-col p-5">
+      <DeleteModal reveal={modalReveal} handleReveal={handleModalReveal} handleDelete={handlePostDelete} object={post}/>
       <Link
         className="hover:cursor-pointer hover:bg-red-900 duration-200 h-[5%] p-4 flex justify-center items-center border-b-2 border-t-2 border-[#453750]"
         onClick={() => {
@@ -58,8 +77,19 @@ const PostPage = () => {
       <div className="bg-[#2E233C] h-[95%] p-3 rounded-b-lg">
         <div className="h-[75%]">
           <div className="h-[15%] flex w-full justify-between">
-            <div className="font-bold text-3xl">
-              {post.title}
+            <div>
+              <div className="flex gap-2 items-center">
+                <h1 className="font-bold text-3xl">
+                {post.title}
+                  </h1>
+                 {(auth.userid == post.authorid) ? 
+                  <FaTrashAlt 
+                    className="hover:cursor-pointer hover:fill-red-300 fill-red-600" 
+                    onClick={handleModalReveal}  
+                    name="Delete Post"
+                    />
+                  : <></>}
+              </div>
               <div className="text-base font-normal text-gray-200">
                 <Link
                   to={`/users/${post.authorid}`}

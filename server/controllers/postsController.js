@@ -24,9 +24,8 @@ const validateContent = (isPost) => {
 
 const createPost = asyncHandler(async (req, res) => {
   const result = validationResult(req);
-  if (!result.isEmpty())
-    return res.json(result);
-  
+  if (!result.isEmpty()) return res.json(result);
+
   if (!req.user) {
     console.log("no req.user here");
     return res.json({ errors: ["Must be logged in"] });
@@ -51,9 +50,8 @@ const getComments = asyncHandler(async (req, res) => {
 });
 const createComment = asyncHandler(async (req, res) => {
   const result = validationResult(req);
-  if (!result.isEmpty())
-    return res.json(result);
-  
+  if (!result.isEmpty()) return res.json(result);
+
   console.log("comments created");
   if (!req.user) {
     console.log("no req.user here");
@@ -72,7 +70,12 @@ const getPost = asyncHandler(async (req, res) => {
   res.json(await db.getPostSingle(req.params.id));
 });
 const deletePost = asyncHandler(async (req, res) => {
-  //do stuff
+  const check = db.verifyCreator(req.params.id, req.user.userid);
+  if (check) {
+    db.deleteObject("posts", req.params.id);
+    return res.json({ msg: "Success" });
+  }
+  return res.json({ msg: "Unauthorized" });
 });
 const updatePost = asyncHandler(async (req, res) => {
   //do stuff

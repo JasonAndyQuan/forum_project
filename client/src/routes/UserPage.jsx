@@ -21,10 +21,10 @@ const UserPage = () => {
   const [view, setView] = useState(true);
   const { pathname } = useLocation();
   const [reveal, setReveal] = useState(false);
-  const handleReveal = () =>{
+  const handleReveal = () => {
     const bool = !reveal;
     setReveal(bool);
-  }
+  };
   const handleView = (bool) => {
     setView(bool);
   };
@@ -50,7 +50,12 @@ const UserPage = () => {
   console.log(pathname);
   return (
     <div className="flex items-center h-screen justify-center p-2 overflow-y-auto">
-      <DeleteModal reveal={reveal} handleReveal={handleReveal} handleDelete={handleDelete} object={auth}/>
+      <DeleteModal
+        reveal={reveal}
+        handleReveal={handleReveal}
+        handleDelete={handleDelete}
+        object={auth}
+      />
       <div className=" w-[50%] h-full flex flex-col">
         <div className="bg-[#2E233C] w-full h-[15%] p-4 flex border-2 border-[#342744] justify-between items-center mb-2">
           <div className="flex items-center gap-2">
@@ -59,7 +64,7 @@ const UserPage = () => {
               <FaTrashAlt
                 name="deleteUser"
                 onClick={handleReveal}
-                className="hover:cursor-pointer hover:fill-red-600 fill-red-800"
+                className="hover:cursor-pointer hover:fill-red-300 fill-red-600"
               />
             ) : (
               <div></div>
@@ -89,23 +94,21 @@ const UserPage = () => {
             {view
               ? userData.posts.map((post) => {
                   return (
-                    <div className="last:border-b-2 border-[#342744]">
-                      <PostContainer
-                        post={post}
-                        styles={""}
-                        key={post.postid}
-                      />
+                    <div
+                      className="last:border-b-2 border-[#342744]"
+                      key={post.postid}
+                    >
+                      <PostContainer post={post} styles={""} />
                     </div>
                   );
                 })
               : userData.comments.map((comment) => {
                   return (
-                    <div className="last:border-b-2 border-[#342744]">
-                      <CommentContainer
-                        comment={comment}
-                        styles={""}
-                        key={comment.commentid}
-                      />
+                    <div
+                      className="last:border-b-2 border-[#342744]"
+                      key={comment.commentid}
+                    >
+                      <CommentContainer comment={comment} styles={""} />
                     </div>
                   );
                 })}

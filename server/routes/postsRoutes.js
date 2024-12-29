@@ -17,10 +17,10 @@ postsRouter.post("/", validateContent(true), createPost); //create a post
 postsRouter.get("/:id", getPost); //get a post by its postid
 postsRouter.get("/:id/comments", getComments); //get comments by postid
 postsRouter.post("/:id/comments", validateContent(false), createComment); //create a comment
+postsRouter.delete("/:id", deletePost); //delete a post
 
 
 
 postsRouter.put("/:id", updatePost); //update a post
-postsRouter.delete("/:id", deletePost); //delete a post
 
 module.exports = postsRouter;

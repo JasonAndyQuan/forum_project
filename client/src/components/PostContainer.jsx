@@ -1,13 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import timeAgo from "../utils/dates";
 
-const PostContainer = ({ post, handleSelect, styles }) => {
+const PostContainer = ({ post, styles }) => {
   const navigate = useNavigate();
   const handlePostClick = () => {
     navigate(`/posts/${post.postid}`);
-    handleSelect(true);
   };
-
   return (
     <>
       <div

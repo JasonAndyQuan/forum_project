@@ -7,6 +7,7 @@ import CreatePostModal from "../components/CreatePostModal";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [boxBlur, setBoxBlur] = useState(false);
   const [selected, setSelected] = useState(0);                      //0 for default,
   const { reveal, handleReveal, auth } = useOutletContext();       //1 for a selected post
                                                                     // 2 for create post modal
@@ -33,6 +34,8 @@ const Home = () => {
     };
     if (pathname == "/") {
       fetchPosts();
+      handleSelect(0);
+      setBoxBlur(false);
     } else {
       handleSelect(1);
     }
@@ -40,9 +43,9 @@ const Home = () => {
 
   return (
     <>
-      <div className="bg-[#281E34] w-[100%] h-screen flex p-5 gap-5 overflow-auto">
+      <div className="bg-[#281E34] w-[100%] h-screen flex p-5 gap-5 overflow-auto ">
         {selected == 1 ? (
-          <Outlet context={{ handleSelect, handleReveal, auth} /* prop drilling moment */} />
+          <Outlet context={{ handleSelect, handleReveal, auth, setBoxBlur} /* prop drilling moment */} />
         ) : selected == 0 ? (
           <>
             <div className="w-[80%] flex flex-col p-3 ">
@@ -65,10 +68,10 @@ const Home = () => {
         ) : (
           <CreatePostModal handleSelect={handleSelect} />
         )}
-        {reveal || selected == 2 ? (
+        {reveal || selected == 2 || boxBlur? (
           <div> </div>
         ) : (
-          <ButtonsBox handleSelect={handleSelect} />
+          <ButtonsBox handleSelect={handleSelect}/>
         )}
       </div>
     </>

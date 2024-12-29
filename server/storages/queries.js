@@ -84,11 +84,21 @@ const deleteObject = async (table, id) =>{
 
   if (table != "users" && table != "posts")
     return;
+  
     await db.query(`DELETE FROM ${table} WHERE ${param} = $1`, [id]);
   if (table == "users") {
     await db.query("DELETE FROM posts WHERE authorid = $1", [id]);
     await db.query("DELETE FROM comments WHERE authorid = $1", [id]);
+  } else {
+    await db.query("DELETE FROM comments WHERE postid = $1", [id]);
   }
+}
+
+const verifyCreator = async (postid, userid) => {
+  const {rows} = await db.query("SELECT authorid FROM posts WHERE postid=$1",[postid]);
+  if (rows[0].authorid == userid)
+      return true;
+  return false;
 }
 
 const updateObject = async (table, id) => {
@@ -109,5 +119,6 @@ module.exports = {
   getPosts,
   getPostSingle,
   getUserData,
-  deleteObject
+  deleteObject, 
+  verifyCreator
 };
