@@ -1,6 +1,7 @@
 import { useLocation, useOutletContext, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getPost, getComments, createComment } from "../utils/api";
+import timeAgo from "../utils/dates";
 import { IoMdClose } from "react-icons/io";
 import CommentContainer from "../components/CommentContainer";
 
@@ -10,16 +11,16 @@ const PostPage = () => {
   const [post, setPost] = useState({
     title: "No title",
     content: "No content",
+    published: "",
   });
   const [comments, setComments] = useState([]);
   const [creator, setCreator] = useState("");
   const [error, setError] = useState({});
 
   const handleCreate = async () => {
-    
     if (auth.username) {
       const response = await createComment(creator, pathname);
-      if (response.errors.length == 0){
+      if (response.errors.length == 0) {
         window.location.reload();
       } else {
         setError(response.errors[0]);
@@ -56,25 +57,35 @@ const PostPage = () => {
       </Link>
       <div className="bg-[#2E233C] h-[95%] p-3 rounded-b-lg">
         <div className="h-[75%]">
-          <div className="h-[15%] font-bold text-3xl">
-            {post.title}
-            <div className="text-base font-normal text-gray-200">
-              <Link
-                to={`/users/${post.authorid}`}
-                className="hover:text-gray-500 text-gray-300"
-              >
-                {post.authorusername}
-              </Link>
+          <div className="h-[15%] flex w-full justify-between">
+            <div className="font-bold text-3xl">
+              {post.title}
+              <div className="text-base font-normal text-gray-200">
+                <Link
+                  to={`/users/${post.authorid}`}
+                  className="hover:text-gray-500 text-gray-300"
+                >
+                  {post.authorusername}
+                </Link>
+              </div>
             </div>
+            <h2> {timeAgo(post.published)}</h2>
           </div>
-          <div className="h-[75%] text-gray-300 p-5 text-base whitespace-normal break-words"> {post.content} </div>
+          <div className="h-[75%] text-gray-300 p-5 text-base whitespace-normal break-words">
+            {" "}
+            {post.content}{" "}
+          </div>
         </div>
 
         <div className="h-[25%] flex justify-between gap-2">
           <textarea
-            placeholder={`${ error.msg ? error.msg : "Leave a comment ..." }`}
-            className={`w-[95%] bg-[#281E34] focus:outline-none p-2 h-full rounded-md ${error.msg ? "placeholder-red-500 border-2 border-red-500" : ""}`}
-            onClick = {()=>{setError({})}}
+            placeholder={`${error.msg ? error.msg : "Leave a comment ..."}`}
+            className={`w-[95%] bg-[#281E34] focus:outline-none p-2 h-full rounded-md ${
+              error.msg ? "placeholder-red-500 border-2 border-red-500" : ""
+            }`}
+            onClick={() => {
+              setError({});
+            }}
             onChange={(e) => {
               setCreator(e.target.value);
             }}
