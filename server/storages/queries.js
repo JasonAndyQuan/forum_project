@@ -2,26 +2,21 @@ const db = require("./pool.js");
 
 const createUser = async (email, username, password) => {
   await db.query(
-    "INSERT into users (email, username, password, date) VALUES ($1, $2, $3, $4)",
+    "INSERT INTO users (email, username, password, date) VALUES ($1, $2, $3, $4)",
     [email, username, password, "today"]
   );
 };
-const createPost = async (authorid, authorusername, title, content)=>  {
+const createPost = async (authorid, title, content)=>  {
   await db.query(
-    "INSERT into posts (authorid, title, content, published, authorusername) VALUES ($1, $2, $3, $4, $5)",
-    [authorid, title, content, "today", authorusername]
+    "INSERT INTO posts (authorid, title, content, published) VALUES ($1, $2, $3, $4)",
+    [authorid, title, content, "today"]
   );
 };
 
-const createComment = async (
-  authorid,
-  authorusername,
-  postid,
-  content
-) => {
+const createComment = async (authorid, postid, content) => {
   await db.query(
-    "INSERT into comments (authorid, postid, content, published, authorusername) VALUES ($1, $2, $3, $4, $5)",
-    [authorid, postid, content, "today", authorusername]
+    "INSERT INTO comments (authorid, postid, content, published) VALUES ($1, $2, $3, $4)",
+    [authorid, postid, content, "today"]
   );
 };
 
@@ -39,25 +34,34 @@ const getUser_username = async (username)=>  {
   return rows[0];
 };
 
-const getComments = async (table, id)=>  {
+const getComments = async (id)=>  {
   
-  if (table != "users" && table != "posts")
-    return;
-
-  const param = table == "users" ? "authorid" : "postid";
   const { rows } = await db.query(
-    `SELECT * FROM comments WHERE ${param} = $1`,
+    `SELECT comments.*, users.username AS authorusername 
+    FROM comments 
+    JOIN users 
+    ON users.userid = comments.authorid 
+    WHERE postid = $1 `,
     [id]
   );
   return rows;
 };
 
 const getPosts = async ()=>  {
-  const { rows } = await db.query("SELECT * FROM posts");
+  const { rows } = await db.query(`
+    SELECT posts.*, users.username as authorusername 
+    FROM posts
+    JOIN users
+    ON posts.authorid = users.userid`);
   return rows;
 };
 const getPostSingle = async (id) => {
-  const { rows } = await db.query("SELECT * FROM posts WHERE postid=$1", [id]);
+  const { rows } = await db.query(`
+    SELECT posts.*, users.username as authorusername 
+    FROM posts
+    JOIN users
+    ON posts.authorid = users.userid
+    WHERE posts.postid = $1`, [id]);
   return rows[0];
 };
 const getUserData = async (id) => {

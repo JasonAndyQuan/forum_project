@@ -32,7 +32,6 @@ const createPost = asyncHandler(async (req, res) => {
   }
   await db.createPost(
     req.user.userid,
-    req.user.username,
     req.body.title,
     req.body.content
   );
@@ -45,7 +44,7 @@ const getAllPosts = asyncHandler(async (req, res) => {
 });
 
 const getComments = asyncHandler(async (req, res) => {
-  const comments = await db.getComments("posts", req.params.id);
+  const comments = await db.getComments(req.params.id);
   res.json(comments);
 });
 const createComment = asyncHandler(async (req, res) => {
@@ -59,7 +58,6 @@ const createComment = asyncHandler(async (req, res) => {
   }
   await db.createComment(
     req.user.userid,
-    req.user.username,
     req.params.id,
     req.body.content
   );
