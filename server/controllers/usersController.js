@@ -1,11 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
-const {
-  createUser,
-  getUser_username,
-  getUserData,
-} = require("../storages/queries.js");
+const db = require("../storages/queries.js");
 
 //get /:id, show user profile and their comments
 //post , create a user profile
@@ -16,7 +12,7 @@ const validateUser = () => [
     .isLength({ min: 3, max: 25 })
     .withMessage("Must be 3 - 25 chars")
     .custom(async (username) => {
-      if (await getUser_username(username)) {
+      if (await db.getUser_username(username)) {
         throw new Error("Username already exists");
       }
     })
@@ -35,7 +31,7 @@ const validateUser = () => [
 
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  const result = await getUserData(req.params.id);
+  const result = await db.getUserData(req.params.id);
     return res.json(result);
 });
 
@@ -49,14 +45,25 @@ const createUserProfile = asyncHandler(async (req, res) => {
       if (err) {
         console.log("errror here at hashing");
       }
-      await createUser(req.body.email, req.body.username, hash);
+      await db.createUser(req.body.email, req.body.username, hash);
     });
   }
   return res.send(JSON.stringify(result));
+});
+
+const deleteUser = asyncHandler(async (req,res) =>{
+    if (req.user.userid == req.params.id) {
+      await db.deleteObject("users", req.user.userid);
+      req.session.destroy()
+      return res.json({msg:"success"});
+    } else {
+      return res.json({msg:"Unauthorized action"});
+    }
 });
 
 module.exports = {
   getUserProfile,
   createUserProfile,
   validateUser,
+  deleteUser
 };

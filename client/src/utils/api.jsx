@@ -103,7 +103,6 @@ const createPost = async function (title, content) {
         title: title,
         content: content,
       }),
-      
     });
     if (!result.ok) {
       console.log("response createpost not ok");
@@ -120,34 +119,45 @@ const createComment = async function (content, postPath) {
     const result = await fetch(`http://localhost:3000${postPath}/comments`, {
       method: "POST",
       credentials: "include",
-      headers:{
-        "Content-Type" : "application/json"
+      headers: {
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        content: content
-      })
-    })
+        content: content,
+      }),
+    });
     if (!result.ok) {
       console.log("response createComment not ok");
     } else {
       return await result.json();
-    }  
-  } catch (err){
+    }
+  } catch (err) {
     console.log(err);
   }
-}
-const getUserData = async function(path) {
-  try{
+};
+const getUserData = async function (path) {
+  try {
     const response = await fetch(`http://localhost:3000${path}`, {
-      credentials: "include"
-    })
-    if (response.ok)
-        return await response.json();
-  }catch(err){
+      credentials: "include",
+    });
+    if (response.ok) return await response.json();
+  } catch (err) {
     console.log(err);
   }
-}
-
+};
+const deleteUser = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:3000/users/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 export {
   getPosts,
   getPost,
@@ -158,5 +168,6 @@ export {
   logOut,
   createPost,
   createComment,
-  getUserData
+  getUserData,
+  deleteUser,
 };

@@ -71,20 +71,20 @@ const createComment = asyncHandler(async (req, res) => {
 const getPost = asyncHandler(async (req, res) => {
   res.json(await db.getPostSingle(req.params.id));
 });
-const updatePost = asyncHandler(async (req, res) => {
+const deletePost = asyncHandler(async (req, res) => {
   //do stuff
 });
-const deletePost = asyncHandler(async (req, res) => {
+const updatePost = asyncHandler(async (req, res) => {
   //do stuff
 });
 
 module.exports = {
   createPost,
   getAllPosts,
-  updatePost,
-  deletePost,
   getPost,
   getComments,
   createComment,
   validateContent,
+  updatePost,
+  deletePost,
 };

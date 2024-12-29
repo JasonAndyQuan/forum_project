@@ -4,7 +4,7 @@ import { MdOutlineCancelPresentation } from "react-icons/md";
 
 const SignUpModal = ({ reveal, handleReveal }) => {
   const [errors, setErrors] = useState({});
-  const [signUp, setSignUp] = useState(true);
+  const [signUp, setSignUp] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -70,14 +70,6 @@ const SignUpModal = ({ reveal, handleReveal }) => {
           <div className="flex justify-between items-center w-[100%] font-semibold text-[#342744]">
             <div className="flex w-[45%]  text-base">
               <div
-                className={`${topBoxStyles} ${signUp ? toggled : untoggled}`}
-                onClick={() => {
-                  handleStyle(true);
-                }}
-              >
-                {" Sign-Up"}
-              </div>
-              <div
                 className={`${topBoxStyles} ${
                   signUp ? untoggled : toggled
                 } w-[40%] text-center`}
@@ -86,6 +78,14 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                 }}
               >
                 {"Login"}
+              </div>
+              <div
+                className={`${topBoxStyles} ${signUp ? toggled : untoggled}`}
+                onClick={() => {
+                  handleStyle(true);
+                }}
+              >
+                {" Sign-Up"}
               </div>
             </div>
             <MdOutlineCancelPresentation
@@ -170,12 +170,16 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                 <div></div>
               ) : (
                 <div className="bg-[#281E34] rounded-lg p-3 ">
-                  <h1 className="border-b-2 border-gray-2"> Demo Credentials </h1>
+                  <h1 className="border-b-2 border-gray-2">
+                    {"Demo Credentials"}
+                  </h1>
                   <div className="flex gap-1">
-                    <p> Username: </p> <p className="text-blue-400"> User123 </p>
+                    <p> {"Username:"} </p>
+                    <p className="text-blue-400"> {"User123"} </p>
                   </div>
                   <div className="flex gap-1">
-                    <p> Username: </p> <p className="text-green-400" > Password123 </p>
+                    <p> {"Username:"} </p>
+                    <p className="text-green-400"> {"Password123"} </p>
                   </div>
                 </div>
               )}

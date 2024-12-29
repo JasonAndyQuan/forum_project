@@ -1,11 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useOutletContext, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getUserData } from "../utils/api";
+import { getUserData, deleteUser } from "../utils/api";
 import PostContainer from "../components/PostContainer";
 import CommentContainer from "../components/CommentContainer";
 import timeAgo from "../utils/dates";
+import DeleteModal from "../components/DeleteModal";
+import { FaTrashAlt } from "react-icons/fa";
 
 const UserPage = () => {
+  const navigate = useNavigate();
+  const { auth } = useOutletContext();
   const [userData, setUserData] = useState({
     user: {
       username: "Not found",
@@ -16,7 +20,11 @@ const UserPage = () => {
   });
   const [view, setView] = useState(true);
   const { pathname } = useLocation();
-
+  const [reveal, setReveal] = useState(false);
+  const handleReveal = () =>{
+    const bool = !reveal;
+    setReveal(bool);
+  }
   const handleView = (bool) => {
     setView(bool);
   };
@@ -28,20 +36,35 @@ const UserPage = () => {
     };
     fetchUserData();
   }, [pathname]);
-  //selected: "bg-[#2E233C]"
-  //not selected: "bg-[#281E34]"
 
-  const bStyles =
-    "duration-200 p-2 text-center grow border-[#342744] ";
+  const handleDelete = async () => {
+    const response = await deleteUser(auth.userid);
+    navigate("/");
+    window.location.reload();
+  };
+
+  const bStyles = "duration-200 p-2 text-center grow border-[#342744] ";
   const toggled = " bg-[#281E34] border-2 border-b-0";
-  const untoggled = " bg-[#2E233C] border-b-2 hover:cursor-pointer hover:bg-[#342744] ";
-
+  const untoggled =
+    " bg-[#2E233C] border-b-2 hover:cursor-pointer hover:bg-[#342744] ";
   console.log(pathname);
   return (
     <div className="flex items-center h-screen justify-center p-2 overflow-y-auto">
+      <DeleteModal reveal={reveal} handleReveal={handleReveal} handleDelete={handleDelete} object={auth}/>
       <div className=" w-[50%] h-full flex flex-col">
         <div className="bg-[#2E233C] w-full h-[15%] p-4 flex border-2 border-[#342744] justify-between items-center mb-2">
-          <h1 className="text-2xl"> {userData.user.username} </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl"> {userData.user.username} </h1>
+            {auth.username == userData.user.username ? (
+              <FaTrashAlt
+                name="deleteUser"
+                onClick={handleReveal}
+                className="hover:cursor-pointer hover:fill-red-600 fill-red-800"
+              />
+            ) : (
+              <div></div>
+            )}
+          </div>
           <h3> {` Joined: ${timeAgo(userData.user.date)}`} </h3>
         </div>
         <div className="w-full grow flex flex-col">
@@ -67,14 +90,22 @@ const UserPage = () => {
               ? userData.posts.map((post) => {
                   return (
                     <div className="last:border-b-2 border-[#342744]">
-                      <PostContainer post={post} styles={""} key={post.postid}/>
+                      <PostContainer
+                        post={post}
+                        styles={""}
+                        key={post.postid}
+                      />
                     </div>
                   );
                 })
               : userData.comments.map((comment) => {
                   return (
                     <div className="last:border-b-2 border-[#342744]">
-                      <CommentContainer comment={comment} styles={""} key={comment.commentid}/>
+                      <CommentContainer
+                        comment={comment}
+                        styles={""}
+                        key={comment.commentid}
+                      />
                     </div>
                   );
                 })}
