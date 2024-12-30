@@ -66,7 +66,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
   if (reveal)
     return (
       <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-lg flex justify-center items-center">
-        <div className="bg-[#1E1627]  min-w-[20rem] w-[30%] h-[70%] p-4 flex flex-col items-center rounded-lg">
+        <div className="bg-[#1E1627]  min-w-[20rem] w-[30rem] h-[70%] p-4 flex flex-col items-center rounded-lg">
           <div className="flex justify-between items-center w-[100%] font-semibold text-[#342744]">
             <div className="flex w-[45%] text-base">
               <div

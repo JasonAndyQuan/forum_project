@@ -56,8 +56,8 @@ const UserPage = () => {
         handleDelete={handleDelete}
         object={auth}
       />
-      <div className=" w-[50%] h-full flex flex-col">
-        <div className="bg-[#2E233C] w-full  min-h-[15%] max-h-[15%] p-4 flex border-2 border-[#342744] justify-between items-center mb-2">
+      <div className=" w-[45rem] min-w-[15rem] h-full flex flex-col">
+        <div className="bg-[#2E233C] w-full min-h-[15%] max-h-[15%] p-4 flex border-2 border-[#342744] justify-between items-center mb-2">
           <div className="flex items-center gap-2">
             <h1 className="text-2xl"> {userData.user.username} </h1>
             {auth.username == userData.user.username ? (

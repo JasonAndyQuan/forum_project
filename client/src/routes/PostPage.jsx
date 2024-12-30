@@ -102,12 +102,12 @@ const PostPage = () => {
       >
         <IoMdClose />
       </Link>
-      <div className="bg-[#2E233C] h-[95%] p-3 rounded-b-lg">
-        <div className="h-[75%]">
-          <div className="h-[15%] flex w-full justify-between">
-            <div>
-              <div className="flex gap-2 items-center">
-                <h1 className="font-bold text-3xl">{post.title}</h1>
+      <div className="bg-[#2E233C] h-[95%] w-full p-3 rounded-b-lg">
+        <div className="h-[75%] w-full">
+          <div className="h-[15%] flex w-full justify-between ">
+            <div className="w-fit">
+              <div className="flex gap-2 items-center w-full">
+                <div className="font-bold text-2xl w-full min-w-[10rem] overflow-auto max-h-[5rem]">{post.title}</div>
                 {auth.userid == post.authorid ? (
                   <>
                     <FaTrashAlt
@@ -140,12 +140,11 @@ const PostPage = () => {
             </div>
             <h2> {timeAgo(post.published)}</h2>
           </div>
-          <div className="h-[75%] text-gray-300 p-5 text-base whitespace-normal break-words">
+          <div className="h-[75%] text-gray-300 p-5 text-base whitespace-normal break-words overflow-auto">
             {" "}
             {post.content}{" "}
           </div>
         </div>
-
         <div className="h-[25%] flex justify-between gap-2">
           <textarea
             placeholder={`${error.msg ? error.msg : "Leave a comment ..."}`}

@@ -27,7 +27,7 @@ const CreatePostModal = ({ handleSelect, actionName, selected, operation, postId
   if (selected == 2)
     return (
       <div className="fixed inset-0 bg-opacity-30 backdrop-blur-lg flex justify-center items-center">
-        <div className="bg-[#1E1627] w-[30%] min-w-[15rem] h-[70%] p-4 flex flex-col items-center rounded-lg">
+        <div className="bg-[#1E1627] w-[30rem] min-w-[15rem] h-[70%] p-4 flex flex-col items-center rounded-lg">
           <div className="h-[10%] w-full flex justify-between items-center font-bold text-lg text-gray-400">
             {actionName}
             <MdOutlineCancelPresentation
