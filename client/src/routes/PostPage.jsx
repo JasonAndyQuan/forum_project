@@ -149,7 +149,7 @@ const PostPage = () => {
         <div className="h-[25%] flex justify-between gap-2">
           <textarea
             placeholder={`${error.msg ? error.msg : "Leave a comment ..."}`}
-            className={`w-[95%] bg-[#281E34] focus:outline-none p-2 h-full rounded-md ${
+            className={`grow bg-[#281E34] focus:outline-none p-2 h-full rounded-md ${
               error.msg ? "placeholder-red-500 border-2 border-red-500" : ""
             }`}
             onClick={() => {
@@ -160,7 +160,7 @@ const PostPage = () => {
             }}
           />
           <div
-            className="w-[5%] h-full flex justify-center items-center duration-200 text-[#453750] text-2xl bg-transparent hover:bg-green-600 hover:cursor-pointer hover:text-gray-300 border-2 border-[#453750]"
+            className="w-10 h-full flex justify-center items-center duration-200 text-[#453750] text-2xl bg-transparent hover:bg-green-600 hover:cursor-pointer hover:text-gray-300 border-2 border-[#453750]"
             onClick={handleCreate}
           >
             {"►"}

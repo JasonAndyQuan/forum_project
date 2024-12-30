@@ -13,9 +13,8 @@ const PostContainer = ({ post, styles }) => {
         className={`border-t-2 p-3 ${styles} h-[30%] w-[100%] hover:bg-[#2E233C] hover:cursor-pointer border-[#342744] flex flex-col`}
       >
         <div className="h-[20%] p-1 text-2xl font-[550] flex justify-between items-center">
-          {" "}
-          {post.title}
-          <p className="text-sm font-normal">  {timeAgo(post.published)}</p>
+          <p className="overflow-hidden text-ellipsis whitespace-nowrap">{post.title}</p>
+          <p className="text-sm font-normal"> {timeAgo(post.published)}</p>
         </div>
         <Link
           to={`/users/${post.authorid}`}

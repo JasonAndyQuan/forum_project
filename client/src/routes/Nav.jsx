@@ -47,8 +47,8 @@ const Nav = () => {
     <>
       <SignUpModal reveal={reveal} handleReveal={handleReveal} />
       <div className="bg-[#281E34] h-screen flex flex-col">
-        <div className="h-[50px] bg-[#1E1627] w-[100%] flex items-center justify-between p-5 pt-7">
-          <div className="w-[5%] flex items-center justify-between">
+        <div className="h-[50px] bg-[#1E1627] w-screen flex items-center justify-between p-5 pr-3">
+          <div className="w-[5rem] flex items-center justify-between">
             <a href="/">
               <IoMdHome size="2rem" className="hover:fill-[#e2e2b6a9]" />
             </a>
@@ -58,7 +58,7 @@ const Nav = () => {
               </div>
             </div>
           </div>
-          <div className="w-[15%]">
+          <div className="w-[15rem]">
             <AuthButton
               auth={auth}
               handleReveal={handleReveal}

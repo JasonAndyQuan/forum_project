@@ -6,7 +6,7 @@ const AuthButton = ({ auth, handleReveal, handleLogOut }) => {
         onClick={(auth.username) ? handleLogOut :  handleReveal }
         className="w-[100%] rounded-md flex justify-center items-center duration-200 text-gray-300 hover:cursor-pointer hover:bg-transparent bg-[#281E34]"
       >
-        {isUserAuthed}
+        <p>{isUserAuthed}</p>
       </div>
     </div>
   );

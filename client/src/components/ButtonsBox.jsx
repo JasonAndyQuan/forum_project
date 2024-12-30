@@ -16,7 +16,7 @@ const ButtonsBox = ({ handleSelect }) => {
   };
   return (
     <>
-      <div className="border-l-2 w-[20%] border-[#342744] p-2 flex flex-col items-center gap-3 fixed right-1 h-[87%]">
+      <div className="border-l-2 w-[20%] min-w-[5rem] border-[#342744] p-2 flex flex-col items-center gap-3 fixed right-1 h-[87%]">
         <div
           className={`${buttonStyle} h-[5%] duration-1000 ${
             isLoggedin ? "bg-green-900" : "bg-red-950"

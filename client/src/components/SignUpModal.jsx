@@ -61,18 +61,18 @@ const SignUpModal = ({ reveal, handleReveal }) => {
   const toggled = "bg-[#342744]";
   const untoggled = " bg-[#281E34] hover:cursor-pointer hover:bg-[#342744]";
   const textBoxStyle =
-    "text-black rounded-md h-[75%] p-2 focus:outline-none w-full bg-gray-300";
+    "text-black rounded-md h-[75%] p-2 focus:outline-none w-full min-w-[5rem] bg-gray-300";
 
   if (reveal)
     return (
       <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-lg flex justify-center items-center">
-        <div className="bg-[#1E1627] aspect-square w-[30%] p-4 flex flex-col items-center rounded-lg">
+        <div className="bg-[#1E1627]  min-w-[20rem] w-[30%] h-[70%] p-4 flex flex-col items-center rounded-lg">
           <div className="flex justify-between items-center w-[100%] font-semibold text-[#342744]">
-            <div className="flex w-[45%]  text-base">
+            <div className="flex w-[45%] text-base">
               <div
                 className={`${topBoxStyles} ${
                   signUp ? untoggled : toggled
-                } w-[40%] text-center`}
+                } w-[40%] min-w-[5rem] text-center`}
                 onClick={() => {
                   handleStyle(false);
                 }}
@@ -80,7 +80,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                 {"Login"}
               </div>
               <div
-                className={`${topBoxStyles} ${signUp ? toggled : untoggled}`}
+                className={`${topBoxStyles} ${signUp ? toggled : untoggled} min-w-[5rem] `}
                 onClick={() => {
                   handleStyle(true);
                 }}
@@ -162,14 +162,14 @@ const SignUpModal = ({ reveal, handleReveal }) => {
               )}
               <button
                 type="submit"
-                className="w-full h-[15%] bg-[#281E34] flex justify-center items-center duration-200 text-gray-300 hover:bg-green-600 rounded-lg"
+                className="w-full min-w-[5rem] h-[15%] bg-[#281E34] flex justify-center items-center duration-200 text-gray-300 hover:bg-green-600 rounded-lg"
               >
                 {signUp ? "Sign Up" : "Login"}
               </button>
               {signUp ? (
                 <div></div>
               ) : (
-                <div className="bg-[#281E34] rounded-lg p-3 ">
+                <div className="bg-[#281E34] rounded-lg p-3 flex flex-col min-w-[40%] text-sm">
                   <h1 className="border-b-2 border-gray-2">
                     {"Demo Credentials"}
                   </h1>

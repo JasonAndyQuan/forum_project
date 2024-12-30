@@ -63,7 +63,7 @@ const Home = () => {
           />
         ) : (
           <>
-            <div className="w-[80%] flex flex-col p-3 ">
+            <div className="w-[80%] flex flex-col p-3">
               {posts.length != 0 ? (
                 posts.map((post) => {
                   return (
