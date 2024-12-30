@@ -30,11 +30,7 @@ const createPost = asyncHandler(async (req, res) => {
     console.log("no req.user here");
     return res.json({ errors: ["Must be logged in"] });
   }
-  await db.createPost(
-    req.user.userid,
-    req.body.title,
-    req.body.content
-  );
+  await db.createPost(req.user.userid, req.body.title, req.body.content);
   res.json({ errors: [] });
 });
 
@@ -56,11 +52,7 @@ const createComment = asyncHandler(async (req, res) => {
     console.log("no req.user here");
     return res.json({ errors: ["Must be logged in"] });
   }
-  await db.createComment(
-    req.user.userid,
-    req.params.id,
-    req.body.content
-  );
+  await db.createComment(req.user.userid, req.params.id, req.body.content);
   res.json({ errors: [] });
 });
 
@@ -70,7 +62,7 @@ const getPost = asyncHandler(async (req, res) => {
 const deletePost = asyncHandler(async (req, res) => {
   const check = db.verifyCreator(req.params.id, req.user.userid, "posts");
   if (check) {
-    db.deleteObject("posts", req.params.id);
+    await db.deleteObject("posts", req.params.id);
     return res.json({ msg: "Success" });
   }
   return res.json({ msg: "Unauthorized" });
@@ -78,13 +70,22 @@ const deletePost = asyncHandler(async (req, res) => {
 const deleteComment = asyncHandler(async (req, res) => {
   const check = db.verifyCreator(req.params.id, req.user.userid, "comments");
   if (check) {
-    db.deleteObject("comments", req.params.id);
+    await db.deleteObject("comments", req.params.id);
     return res.json({ msg: "Success" });
   }
   return res.json({ msg: "Unauthorized" });
 });
 const updatePost = asyncHandler(async (req, res) => {
-  //do stuff
+  const result = validationResult(req);
+  if (!result.isEmpty()) return res.json(result);
+
+  const check = db.verifyCreator(req.params.id, req.user.userid, "posts");
+  if (check) {
+    await db.updatePost(req.params.id, req.body.title, req.body.content);
+    return res.json({errors:[]})
+  }
+  return res.json({errors:["Unauthorized"]});
+
 });
 
 module.exports = {
@@ -96,5 +97,5 @@ module.exports = {
   validateContent,
   updatePost,
   deletePost,
-  deleteComment
+  deleteComment,
 };

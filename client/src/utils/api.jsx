@@ -184,6 +184,27 @@ const deleteComment = async (id) => {
     console.log(err);
   }
 };
+
+const updatePost = async (id, title, content) => {
+  try {
+    const response = await fetch(`http://localhost:3000/posts/${id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: title,
+        content: content,
+      }),
+    });
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 export {
   getPosts,
   getPost,
@@ -197,5 +218,6 @@ export {
   getUserData,
   deleteUser,
   deletePost,
-  deleteComment
+  deleteComment,
+  updatePost,
 };

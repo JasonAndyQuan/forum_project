@@ -7,15 +7,15 @@ const DeleteModal = ({ reveal, handleReveal, handleDelete, object }) => {
       {"Are you sure you want to delete this "} {isUser ? "user" : "post"}:
       <br />
       <br />
-      <div className="text-red-600">
-        {isUser ? object.username : object.title}{" "}
+      <div className="text-red-600 overflow-hidden whitespace-nowrap text-ellipsis max-w-[200px]">
+        {isUser ? object.username : object.title}
       </div>
       <br />
       {"Doing so will also delete any associated comments"}
       {isUser ? " and posts" : ""}.
     </>
 
-  if (reveal)
+  if (reveal == 1)
     return (
       <div className="fixed inset-0 bg-opacity-30 backdrop-blur-lg flex justify-center items-center">
         <div className="bg-[#1E1627] aspect-square w-[25%] h-auto p-4 flex flex-col items-center rounded-lg">
@@ -24,7 +24,7 @@ const DeleteModal = ({ reveal, handleReveal, handleDelete, object }) => {
               <MdOutlineCancelPresentation
                 className="text-3xl transition-all hover:fill-red-500 duration-200 cursor-pointer justify-self-end mb-4"
                 fill={"#9882AC"}
-                onClick={handleReveal}
+                onClick={() => {handleReveal(0)}}
               />
               <h3 className="bg-[#1E1627] p-2 rounded-md"> {areYouSure} </h3>
             </div>

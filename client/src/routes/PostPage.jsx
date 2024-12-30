@@ -1,17 +1,30 @@
-import { useLocation, useOutletContext, Link, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useOutletContext,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getPost, getComments, createComment, deletePost } from "../utils/api";
+import {
+  getPost,
+  getComments,
+  createComment,
+  deletePost,
+  updatePost,
+} from "../utils/api";
 import timeAgo from "../utils/dates";
 import { IoMdClose } from "react-icons/io";
 import CommentContainer from "../components/CommentContainer";
-import { FaTrashAlt } from "react-icons/fa";
-import DeleteModal from "../components/DeleteModal"
+import { FaTrashAlt, FaRegEdit } from "react-icons/fa";
+import DeleteModal from "../components/DeleteModal";
+import CreatePostModal from "../components/CreatePostModal";
 
 const PostPage = () => {
   const navigate = useNavigate();
   const { handleSelect, handleReveal, auth, setBoxBlur } = useOutletContext();
   const { pathname } = useLocation();
   const [post, setPost] = useState({
+    postid: "none",
     title: "No title",
     content: "No content",
     published: "",
@@ -19,13 +32,16 @@ const PostPage = () => {
   const [comments, setComments] = useState([]);
   const [creator, setCreator] = useState("");
   const [error, setError] = useState({});
-  const [modalReveal, setModalReveal] = useState(false);
-  
-  const handleModalReveal = () =>{
-    const bool = !modalReveal;
-    setBoxBlur(bool);
-    setModalReveal(bool);
-  }
+  const [modalReveal, setModalReveal] = useState(0);
+
+  //0 -> hide
+  //1 -> deletePost
+  //2 -> editPost
+
+  const handleModalReveal = (num) => {
+    setBoxBlur(num);
+    setModalReveal(num);
+  };
 
   const handleCreate = async () => {
     if (auth.username) {
@@ -48,20 +64,34 @@ const PostPage = () => {
     };
     const fetchComments = async () => {
       const comments = await getComments(pathname);
-      setComments(comments.reverse());
+      setComments(comments);
     };
     fetchPosts();
     fetchComments();
   }, [pathname]);
+
   const handlePostDelete = async () => {
-      const response = await deletePost(pathname);
-      navigate("/")
-      console.log(response);
-  }
-  
+    const response = await deletePost(pathname);
+    navigate("/");
+    console.log(response);
+  };
+
+
+
   return (
     <div className="bg-[#281E34] h-screen w-[80%] flex flex-col p-5">
-      <DeleteModal reveal={modalReveal} handleReveal={handleModalReveal} handleDelete={handlePostDelete} object={post}/>
+      <DeleteModal
+        reveal={modalReveal}
+        handleReveal={handleModalReveal}
+        handleDelete={handlePostDelete}
+        object={post}
+      />
+      {(modalReveal == 2) ? <CreatePostModal
+        handleSelect={handleModalReveal}
+        actionName={"Edit post"}
+        operation={updatePost}
+        postId={post.postid}
+      /> : <></>}
       <Link
         className="hover:cursor-pointer hover:bg-red-900 duration-200 h-[5%] p-4 flex justify-center items-center border-b-2 border-t-2 border-[#453750]"
         onClick={() => {
@@ -76,16 +106,27 @@ const PostPage = () => {
           <div className="h-[15%] flex w-full justify-between">
             <div>
               <div className="flex gap-2 items-center">
-                <h1 className="font-bold text-3xl">
-                {post.title}
-                  </h1>
-                 {(auth.userid == post.authorid) ? 
-                  <FaTrashAlt 
-                    className="hover:cursor-pointer hover:fill-red-300 fill-red-600" 
-                    onClick={handleModalReveal}  
-                    name="Delete Post"
+                <h1 className="font-bold text-3xl">{post.title}</h1>
+                {auth.userid == post.authorid ? (
+                  <>
+                    <FaTrashAlt
+                      className="hover:cursor-pointer hover:fill-red-300 fill-red-600"
+                      onClick={() => {
+                        handleModalReveal(1);
+                      }}
+                      name="Delete Post"
                     />
-                  : <></>}
+                    <FaRegEdit
+                      className="hover:cursor-pointer hover:fill-blue-400 fill-blue-700"
+                      onClick={() => {
+                        handleModalReveal(2);
+                      }}
+                      name="Edit Post"
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="text-base font-normal text-gray-200">
                 <Link

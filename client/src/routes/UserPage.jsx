@@ -21,10 +21,9 @@ const UserPage = () => {
 
   const [view, setView] = useState(true);
   const { pathname } = useLocation();
-  const [reveal, setReveal] = useState(false);
-  const handleReveal = () => {
-    const bool = !reveal;
-    setReveal(bool);
+  const [reveal, setReveal] = useState(0);
+  const handleReveal = (num) => {
+    setReveal(num);
   };
   const handleView = (bool) => {
     setView(bool);
@@ -64,7 +63,7 @@ const UserPage = () => {
             {auth.username == userData.user.username ? (
               <FaTrashAlt
                 name="deleteUser"
-                onClick={handleReveal}
+                onClick={() => {handleReveal(1)}}
                 className="hover:cursor-pointer hover:fill-red-300 fill-red-600"
               />
             ) : (

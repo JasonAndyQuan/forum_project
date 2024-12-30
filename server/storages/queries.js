@@ -6,7 +6,7 @@ const createUser = async (email, username, password) => {
     [email, username, password, "today"]
   );
 };
-const createPost = async (authorid, title, content)=>  {
+const createPost = async (authorid, title, content) => {
   await db.query(
     "INSERT INTO posts (authorid, title, content, published) VALUES ($1, $2, $3, $4)",
     [authorid, title, content, "today"]
@@ -20,22 +20,21 @@ const createComment = async (authorid, postid, content) => {
   );
 };
 
-const getUser = async (id)=>  {
+const getUser = async (id) => {
   const { rows } = await db.query("SELECT * FROM users WHERE userid = $1", [
     id,
   ]);
   return rows[0];
 };
 
-const getUser_username = async (username)=>  {
+const getUser_username = async (username) => {
   const { rows } = await db.query("SELECT * FROM users WHERE username = $1", [
     username,
   ]);
   return rows[0];
 };
 
-const getComments = async (id)=>  {
-  
+const getComments = async (id) => {
   const { rows } = await db.query(
     `SELECT comments.*, users.username AS authorusername 
     FROM comments 
@@ -47,7 +46,7 @@ const getComments = async (id)=>  {
   return rows;
 };
 
-const getPosts = async ()=>  {
+const getPosts = async () => {
   const { rows } = await db.query(`
     SELECT posts.*, users.username as authorusername 
     FROM posts
@@ -56,12 +55,15 @@ const getPosts = async ()=>  {
   return rows;
 };
 const getPostSingle = async (id) => {
-  const { rows } = await db.query(`
+  const { rows } = await db.query(
+    `
     SELECT posts.*, users.username as authorusername 
     FROM posts
     JOIN users
     ON posts.authorid = users.userid
-    WHERE posts.postid = $1`, [id]);
+    WHERE posts.postid = $1`,
+    [id]
+  );
   return rows[0];
 };
 const getUserData = async (id) => {
@@ -83,40 +85,44 @@ const getUserData = async (id) => {
   return result;
 };
 
-const deleteObject = async (table, id) =>{
-  const param = (table == "users") ? "userid" : (table =="posts") ? "postid" : "commentid";
+const deleteObject = async (table, id) => {
+  const param =
+    table == "users" ? "userid" : table == "posts" ? "postid" : "commentid";
 
-  if (table != "users" && table != "posts" && table != "comments")
-    return;
-  
-    await db.query(`DELETE FROM ${table} WHERE ${param} = $1`, [id]);
+  if (table != "users" && table != "posts" && table != "comments") return;
+
+  await db.query(`DELETE FROM ${table} WHERE ${param} = $1`, [id]);
   if (table == "users") {
     await db.query("DELETE FROM posts WHERE authorid = $1", [id]);
     await db.query("DELETE FROM comments WHERE authorid = $1", [id]);
-  } else if (table == "posts"){
+  } else if (table == "posts") {
     await db.query("DELETE FROM comments WHERE postid = $1", [id]);
   }
-}
+};
 
 const verifyCreator = async (postid, userid, table) => {
-  if (table != "comments" && table != "posts")
-    return;
-  
-  const param = (table == "posts") ? "postid" : "commentid";
-  
-  const {rows} = await db.query(`SELECT authorid FROM ${table} WHERE ${param}=$1`,[postid]);
-  if (rows[0].authorid == userid)
-      return true;
+  if (table != "comments" && table != "posts") return;
+
+  const param = table == "posts" ? "postid" : "commentid";
+
+  const { rows } = await db.query(
+    `SELECT authorid FROM ${table} WHERE ${param}=$1`,
+    [postid]
+  );
+  if (rows[0].authorid == userid) return true;
   return false;
-}
+};
 
-const updateObject = async (table, id) => {
-  if (table != "users" && table != "posts")
-    return;
-  const param = (table == "users") ? "userid" : "postid";
-
-}
-
+const updatePost = async (id, title, content) => {
+  await db.query(
+    `
+    UPDATE posts
+    SET title = $1, content = $2
+    WHERE postid = $3
+    `,
+    [title, content, id]
+  );
+};
 
 module.exports = {
   createUser,
@@ -128,6 +134,7 @@ module.exports = {
   getPosts,
   getPostSingle,
   getUserData,
-  deleteObject, 
-  verifyCreator
+  deleteObject,
+  verifyCreator,
+  updatePost,
 };

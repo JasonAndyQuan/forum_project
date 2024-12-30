@@ -20,9 +20,9 @@ postsRouter.get("/:id/comments", getComments); //get comments by postid
 postsRouter.post("/:id/comments", validateContent(false), createComment); //create a comment
 postsRouter.delete("/:id", deletePost); //delete a post
 postsRouter.delete("/comments/:id", deleteComment); //delete a comment
+postsRouter.put("/:id", validateContent(true), updatePost); //update a post
 
 
 
-postsRouter.put("/:id", updatePost); //update a post
 
 module.exports = postsRouter;

@@ -1,4 +1,4 @@
-import { getPosts } from "../utils/api";
+import { getPosts, createPost } from "../utils/api";
 import { useState, useEffect } from "react";
 import { useOutletContext, Outlet, useLocation } from "react-router-dom";
 import ButtonsBox from "../components/ButtonsBox";
@@ -8,12 +8,11 @@ import CreatePostModal from "../components/CreatePostModal";
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [boxBlur, setBoxBlur] = useState(false);
-  const [selected, setSelected] = useState(0);                      //0 for default,
-  const { reveal, handleReveal, auth } = useOutletContext();       //1 for a selected post
-                                                                    // 2 for create post modal
+  const [selected, setSelected] = useState(0); //0 for default,
+  const { reveal, handleReveal, auth } = useOutletContext(); //1 for a selected post
+  // 2 for create post modal
 
   const { pathname } = useLocation();
-
 
   window.addEventListener("popstate", () => {
     handleSelect(0);
@@ -45,7 +44,16 @@ const Home = () => {
     <>
       <div className="bg-[#281E34] w-[100%] h-screen flex p-5 gap-5 overflow-auto ">
         {selected == 1 ? (
-          <Outlet context={{ handleSelect, handleReveal, auth, setBoxBlur} /* prop drilling moment */} />
+          <Outlet
+            context={
+              {
+                handleSelect,
+                handleReveal,
+                auth,
+                setBoxBlur,
+              } /* prop drilling moment */
+            }
+          />
         ) : selected == 0 ? (
           <>
             <div className="w-[80%] flex flex-col p-3 ">
@@ -66,12 +74,17 @@ const Home = () => {
             </div>
           </>
         ) : (
-          <CreatePostModal handleSelect={handleSelect} />
+          <CreatePostModal
+            handleSelect={handleSelect}
+            actionName={"Create Post"}
+            operation={createPost}
+            postid={false}
+          />
         )}
-        {reveal || selected == 2 || boxBlur? (
+        {reveal || selected == 2 || boxBlur ? (
           <div> </div>
         ) : (
-          <ButtonsBox handleSelect={handleSelect}/>
+          <ButtonsBox handleSelect={handleSelect} />
         )}
       </div>
     </>
