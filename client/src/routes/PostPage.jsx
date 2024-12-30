@@ -86,12 +86,13 @@ const PostPage = () => {
         handleDelete={handlePostDelete}
         object={post}
       />
-      {(modalReveal == 2) ? <CreatePostModal
+      <CreatePostModal
+        selected={modalReveal}
         handleSelect={handleModalReveal}
         actionName={"Edit post"}
         operation={updatePost}
         postId={post.postid}
-      /> : <></>}
+      />
       <Link
         className="hover:cursor-pointer hover:bg-red-900 duration-200 h-[5%] p-4 flex justify-center items-center border-b-2 border-t-2 border-[#453750]"
         onClick={() => {

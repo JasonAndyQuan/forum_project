@@ -43,6 +43,13 @@ const Home = () => {
   return (
     <>
       <div className="bg-[#281E34] w-[100%] h-screen flex p-5 gap-5 overflow-auto ">
+        <CreatePostModal
+          selected={selected}
+          handleSelect={handleSelect}
+          actionName={"Create Post"}
+          operation={createPost}
+          postid={{}}
+        />
         {selected == 1 ? (
           <Outlet
             context={
@@ -54,7 +61,7 @@ const Home = () => {
               } /* prop drilling moment */
             }
           />
-        ) : selected == 0 ? (
+        ) : (
           <>
             <div className="w-[80%] flex flex-col p-3 ">
               {posts.length != 0 ? (
@@ -73,13 +80,6 @@ const Home = () => {
               )}
             </div>
           </>
-        ) : (
-          <CreatePostModal
-            handleSelect={handleSelect}
-            actionName={"Create Post"}
-            operation={createPost}
-            postid={false}
-          />
         )}
         {reveal || selected == 2 || boxBlur ? (
           <div> </div>
