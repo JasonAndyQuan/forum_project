@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { createUser, loginUser } from "../utils/api";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 
 const SignUpModal = ({ reveal, handleReveal }) => {
   const [errors, setErrors] = useState({});
   const [signUp, setSignUp] = useState(false);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const usernameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   const handleStyle = (bool) => {
     setErrors({});
@@ -15,7 +15,10 @@ const SignUpModal = ({ reveal, handleReveal }) => {
   };
 
   const handleLogin = async () => {
-    const result = await loginUser(username, password);
+    const result = await loginUser(
+      usernameRef.current.value,
+      passwordRef.current.value
+    );
     console.log(result);
     if (!result) {
       const errs = {
@@ -33,7 +36,11 @@ const SignUpModal = ({ reveal, handleReveal }) => {
     event.preventDefault();
     if (signUp) {
       console.log("sign up here");
-      const { errors } = await createUser(username, email, password);
+      const { errors } = await createUser(
+        usernameRef.current.value,
+        emailRef.current.value,
+        passwordRef.current.value
+      );
       console.log(errors);
       if (errors.length !== 0) {
         const errs = errors.reduce((acc, item) => {
@@ -41,9 +48,9 @@ const SignUpModal = ({ reveal, handleReveal }) => {
           return acc;
         }, {});
         setErrors(errs);
-        setUsername("");
-        setPassword("");
-        setEmail("");
+        usernameRef.current.value = "";
+        passwordRef.current.value = "";
+        emailRef.current.value = "";
         event.target.reset();
       } else {
         setErrors({});
@@ -80,7 +87,9 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                 {"Login"}
               </div>
               <div
-                className={`${topBoxStyles} ${signUp ? toggled : untoggled} min-w-[5rem] `}
+                className={`${topBoxStyles} ${
+                  signUp ? toggled : untoggled
+                } min-w-[5rem] `}
                 onClick={() => {
                   handleStyle(true);
                 }}
@@ -102,6 +111,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
               <div className="w-full">
                 <div>{"Username"}</div>
                 <input
+                  ref={usernameRef}
                   type="text"
                   name="username"
                   placeholder={`${
@@ -112,7 +122,6 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                       ? "placeholder-red-500  border-2 border-red-500"
                       : ""
                   }`}
-                  onChange={(e) => setUsername(e.target.value)}
                   onClick={() => {
                     setErrors({ ...errors, username: null });
                   }}
@@ -121,6 +130,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
               <div className="w-full">
                 <div>{"Password"}</div>
                 <input
+                  ref={passwordRef}
                   type={`${signUp ? "text" : "password"}`}
                   name="Password"
                   placeholder={`${
@@ -141,6 +151,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                 <div className="w-full">
                   <div>{"Email"}</div>
                   <input
+                    ref={emailRef}
                     type="text"
                     name="Email"
                     placeholder={`${
