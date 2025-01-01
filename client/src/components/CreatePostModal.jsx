@@ -1,28 +1,48 @@
 import { MdOutlineCancelPresentation } from "react-icons/md";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CgSpinner } from "react-icons/cg";
 
-const CreatePostModal = ({ handleSelect, actionName, selected, operation, postId }) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+const CreatePostModal = ({
+  handleSelect,
+  actionName,
+  selected,
+  operation,
+  ogPost,
+}) => {
+  const queryClient = useQueryClient();
   const [errs, setErrs] = useState({});
+  const titleRef = useRef();
+  const contentRef = useRef();
+
+  const post = useMutation({
+    mutationFn: operation,
+    onSuccess: ({ errors }) => {
+      console.log(errors);
+      if (errors.length === 0) {
+        queryClient.invalidateQueries({ queryKey: ["posts"] });
+        handleSelect(0);
+      } else {
+        setErrs(
+          errors.reduce((acc, item) => {
+            acc[item.path] = item.msg;
+            return acc;
+          }, {})
+        );
+      }
+    },
+  });
 
   const handlePost = async () => {
-    const { errors } = postId
-      ? await operation(postId, title, content)
-      : await operation(title, content);
-    if (errors.length != 0) {
-      const errorObj = errors.reduce((acc, item) => {
-        acc[item.path] = item.msg;
-        return acc;
-      }, {});
-      console.log(errorObj);
-      setErrs(errorObj);
-    } else {
-      handleSelect(0);
-      window.location.reload();
-    }
+    const title = titleRef.current.value;
+    const content = contentRef.current.value;
+    post.mutate({
+      title: title,
+      content: content,
+      id: ogPost.postid,
+    });
   };
-  
+
   const errStyle = "placeholder-red-500 border-2 border-red-500";
   if (selected == 2)
     return (
@@ -41,15 +61,14 @@ const CreatePostModal = ({ handleSelect, actionName, selected, operation, postId
           <div className="w-full h-[80%] p-1 bg-[#281E34] mb-2 max-w-full rounded-lg">
             <div className="h-[10%] w-full ">
               <input
+                defaultValue={ogPost.title}
                 name="title"
                 type="text"
                 placeholder={`${errs.title ? errs.title : "Title"}`}
                 className={`w-full bg-transparent focus:outline-none p-2 border-b-[3px] border-[#342744] ${
                   errs.title ? errStyle : ""
                 }`}
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
+                ref={titleRef}
                 onClick={() => {
                   setErrs({ ...errs, title: null });
                 }}
@@ -57,15 +76,14 @@ const CreatePostModal = ({ handleSelect, actionName, selected, operation, postId
             </div>
             <div className="h-[90%] w-full">
               <textarea
+                defaultValue={ogPost.content}
                 name="content"
                 type="text"
                 placeholder={`${errs.content ? errs.content : "Content"}`}
                 className={`w-full bg-transparent focus:outline-none p-2 h-full ${
                   errs.content ? errStyle : ""
                 }`}
-                onChange={(e) => {
-                  setContent(e.target.value);
-                }}
+                ref={contentRef}
                 onClick={() => {
                   setErrs({ ...errs, content: null });
                 }}
@@ -76,7 +94,13 @@ const CreatePostModal = ({ handleSelect, actionName, selected, operation, postId
             className=" w-[50%] h-[10%] flex justify-center items-center duration-200 text-gray-300 text-xl bg-green-700 hover:bg-green-500 hover:cursor-pointer"
             onClick={handlePost}
           >
-            {actionName == "Create Post" ? "Post" : "Edit"}
+            {post.isPending ? (
+              <CgSpinner className="animate-spin " />
+            ) : actionName == "Create Post" ? (
+              "Post"
+            ) : (
+              "Edit"
+            )}
           </div>
         </div>
       </div>

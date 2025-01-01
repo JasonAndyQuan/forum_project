@@ -23,6 +23,7 @@ const validateContent = (isPost) => {
 };
 
 const createPost = asyncHandler(async (req, res) => {
+
   const result = validationResult(req);
   if (!result.isEmpty()) return res.json(result);
 
@@ -36,7 +37,7 @@ const createPost = asyncHandler(async (req, res) => {
 
 const getAllPosts = asyncHandler(async (req, res) => {
   const posts = await db.getPosts();
-  res.json(posts);
+  res.json(posts.reverse());
 });
 
 const getComments = asyncHandler(async (req, res) => {

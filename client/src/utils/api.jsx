@@ -95,7 +95,7 @@ const getComments = async function (id) {
   }
 };
 
-const createPost = async function (title, content) {
+const createPost = async function (post) {
   try {
     const result = await fetch(`${link}/posts`, {
       method: "POST",
@@ -104,8 +104,8 @@ const createPost = async function (title, content) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: title,
-        content: content,
+        title: post.title,
+        content: post.content,
       }),
     });
     if (!result.ok) {
@@ -189,17 +189,17 @@ const deleteComment = async (id) => {
   }
 };
 
-const updatePost = async (id, title, content) => {
+const updatePost = async (post) => {
   try {
-    const response = await fetch(`${link}/posts/${id}`, {
+    const response = await fetch(`${link}/posts/${post.id}`, {
       method: "PUT",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: title,
-        content: content,
+        title: post.title,
+        content: post.content,
       }),
     });
     if (response.ok) {
@@ -209,6 +209,7 @@ const updatePost = async (id, title, content) => {
     console.log(err);
   }
 };
+
 export {
   getPosts,
   getPost,

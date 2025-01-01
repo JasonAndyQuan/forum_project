@@ -4,7 +4,7 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   getPost,
   getComments,
@@ -30,10 +30,9 @@ const PostPage = () => {
     published: "",
   });
   const [comments, setComments] = useState([]);
-  const [creator, setCreator] = useState("");
   const [error, setError] = useState({});
   const [modalReveal, setModalReveal] = useState(0);
-
+  const commentRef = useRef();
   //0 -> hide
   //1 -> deletePost
   //2 -> editPost
@@ -45,7 +44,7 @@ const PostPage = () => {
 
   const handleCreate = async () => {
     if (auth.username) {
-      const response = await createComment(creator, pathname);
+      const response = await createComment(commentRef.current.value, pathname);
       if (response.errors.length == 0) {
         window.location.reload();
       } else {
@@ -91,7 +90,7 @@ const PostPage = () => {
         handleSelect={handleModalReveal}
         actionName={"Edit post"}
         operation={updatePost}
-        postId={post.postid}
+        ogPost={post}
       />
       <Link
         className="hover:cursor-pointer hover:bg-red-900 duration-200 h-[5%] p-4 flex justify-center items-center border-b-2 border-t-2 border-[#453750]"
@@ -154,9 +153,7 @@ const PostPage = () => {
             onClick={() => {
               setError({});
             }}
-            onChange={(e) => {
-              setCreator(e.target.value);
-            }}
+            ref={commentRef}
           />
           <div
             className="w-10 h-full flex justify-center items-center duration-200 text-[#453750] text-2xl bg-transparent hover:bg-green-600 hover:cursor-pointer hover:text-gray-300 border-2 border-[#453750]"
