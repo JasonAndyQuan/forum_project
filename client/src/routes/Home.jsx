@@ -5,7 +5,7 @@ import ButtonsBox from "../components/ButtonsBox";
 import PostContainer from "../components/PostContainer";
 import CreatePostModal from "../components/CreatePostModal";
 import { useQuery } from "@tanstack/react-query";
-import { CgSpinner } from "react-icons/cg";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const posts = useQuery({
@@ -34,7 +34,7 @@ const Home = () => {
   }, [pathname]);
 
   if (posts.isError) {
-    return <div> Unable to fetch posts </div>
+    return <div> Unable to fetch posts </div>;
   }
   return (
     <>
@@ -60,15 +60,13 @@ const Home = () => {
         ) : (
           <div className="w-[80%] flex flex-col p-3">
             {posts.isLoading ? (
-              <div className="flex items-center justify-center gap-2 animate-bounce">
-                <CgSpinner className="animate-spin text-4xl" />
-                <h1 className="text-2xl"> Fetching posts</h1>
-                <CgSpinner className="animate-spin text-4xl" />
+                <Spinner msg={"Fetching posts"} />
+            ) : posts.data?.length === 0 ? (
+              <div className="w-full bg-red-900 p-3  rounded-md ">
+                {"No available posts"}
               </div>
-            ) : posts.data && posts.data.length === 0 ? (
-              <div className="w-full bg-red-900 p-3  rounded-md ">{"No available posts"}</div>
             ) : (
-              posts.data.map((post) => {
+              posts.data?.map((post) => {
                 return (
                   <PostContainer
                     post={post}

@@ -29,6 +29,7 @@ const CreatePostModal = ({
             return acc;
           }, {})
         );
+        throw new Err();
       }
     },
   });
@@ -82,7 +83,7 @@ const CreatePostModal = ({
                 placeholder={`${errs.content ? errs.content : "Content"}`}
                 className={`w-full bg-transparent focus:outline-none p-2 h-full ${
                   errs.content ? errStyle : ""
-                }`}
+                } mt-2`}
                 ref={contentRef}
                 onClick={() => {
                   setErrs({ ...errs, content: null });

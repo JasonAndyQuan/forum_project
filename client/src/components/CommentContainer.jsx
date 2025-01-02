@@ -3,14 +3,18 @@ import timeAgo from "../utils/dates";
 import { useOutletContext } from "react-router-dom";
 import { deleteComment } from "../utils/api";
 import { FaTrashAlt } from "react-icons/fa";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 const CommentContainer = ({ comment, styles }) => {
 
+
+  const queryClient = useQueryClient();
   const {auth} = useOutletContext();
   const handleDelete = async() =>{
     const response = await deleteComment(comment.commentid);
-    window.location.reload();
+    queryClient.invalidateQueries(["posts",comment.postid,"comments"] )
+    queryClient.invalidateQueries(["users",comment.authorid])
     console.log(response);
   } 
 

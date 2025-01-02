@@ -1,4 +1,9 @@
-import { useLocation, useOutletContext, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useOutletContext,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUserData, deleteUser } from "../utils/api";
 import PostContainer from "../components/PostContainer";
@@ -6,39 +11,39 @@ import CommentContainer from "../components/CommentContainer";
 import timeAgo from "../utils/dates";
 import DeleteModal from "../components/DeleteModal";
 import { FaTrashAlt } from "react-icons/fa";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Spinner from "../components/Spinner";
 
 const UserPage = () => {
+  const { id } = useParams();
+  const { pathname } = useLocation();
+
   const navigate = useNavigate();
   const { auth } = useOutletContext();
-  const [userData, setUserData] = useState({
-    user: {
-      username: "Not found",
-      date: "none",
-    },
-    posts: [],
-    comments: [],
-  });
-
   const [view, setView] = useState(true);
-  const { pathname } = useLocation();
   const [reveal, setReveal] = useState(0);
+
+  const {
+    isLoading,
+    isErr,
+    data: userData,
+  } = useQuery({
+    queryKey: ["users", id],
+    queryFn: async () => {
+      return await getUserData(pathname);
+    },
+  });
+  console.log(userData);
+
   const handleReveal = (num) => {
     setReveal(num);
   };
   const handleView = (bool) => {
     setView(bool);
   };
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const result = await getUserData(pathname);
-      console.log(result);
-      setUserData(result);
-    };
-    fetchUserData();
-  }, [pathname]);
 
   const handleDelete = async () => {
-    const response = await deleteUser(auth.userid);
+    await deleteUser(auth.userid);
     navigate("/");
     window.location.reload();
   };
@@ -47,7 +52,19 @@ const UserPage = () => {
   const toggled = " bg-[#281E34] border-2 border-b-0";
   const untoggled =
     " bg-[#2E233C] border-b-2 hover:cursor-pointer hover:bg-[#342744] ";
-  console.log(pathname);
+
+  if (isLoading) {
+    return <Spinner msg={`Loading User ${id} `} />;
+  }
+  if (isErr) {
+    return (
+      <div className="p-1 flex items-start h-screen justify-center animate-pulse">
+        <div className="text-center bg-red-800 p-3 rounded-md">
+          {" User not found "}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="flex items-center h-screen justify-center p-2 overflow-y-auto">
       <DeleteModal
@@ -63,7 +80,9 @@ const UserPage = () => {
             {auth.username == userData.user.username ? (
               <FaTrashAlt
                 name="deleteUser"
-                onClick={() => {handleReveal(1)}}
+                onClick={() => {
+                  handleReveal(1);
+                }}
                 className="hover:cursor-pointer hover:fill-red-300 fill-red-600"
               />
             ) : (

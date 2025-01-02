@@ -118,7 +118,7 @@ const createPost = async function (post) {
   }
 };
 
-const createComment = async function (content, postPath) {
+const createComment = async function ({content, postPath}) {
   try {
     const result = await fetch(`${link}${postPath}/comments`, {
       method: "POST",
