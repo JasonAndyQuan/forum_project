@@ -1,6 +1,6 @@
 //re do all this later 
 
-const link = "http://localhost:3000";
+const link = import.meta.env.VITE_BACKEND_URL;
 
 const getPosts = async function () {
   try {
