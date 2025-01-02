@@ -25,15 +25,20 @@ const UserPage = () => {
 
   const {
     isLoading,
-    isErr,
+    isError,
     data: userData,
   } = useQuery({
     queryKey: ["users", id],
     queryFn: async () => {
       return await getUserData(pathname);
     },
+    select: (data) => {
+      if (!data.user) {
+        throw new Error();
+      }
+      return data;
+    },
   });
-  console.log(userData);
 
   const handleReveal = (num) => {
     setReveal(num);
@@ -56,7 +61,7 @@ const UserPage = () => {
   if (isLoading) {
     return <Spinner msg={`Loading User ${id} `} />;
   }
-  if (isErr) {
+  if (isError) {
     return (
       <div className="p-1 flex items-start h-screen justify-center animate-pulse">
         <div className="text-center bg-red-800 p-3 rounded-md">
@@ -65,6 +70,7 @@ const UserPage = () => {
       </div>
     );
   }
+
   return (
     <div className="flex items-center h-screen justify-center p-2 overflow-y-auto">
       <DeleteModal

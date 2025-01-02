@@ -24,7 +24,6 @@ import Spinner from "../components/Spinner";
 import { CgSpinner } from "react-icons/cg";
 import { FaRegCheckCircle } from "react-icons/fa";
 
-
 const PostPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -53,9 +52,12 @@ const PostPage = () => {
   });
   const mutateComment = useMutation({
     mutationFn: createComment,
-    onSuccess: ({errors}) => {
-      if (errors.length === 0){
-        queryClient.invalidateQueries({queryKey: ["posts",id,"comments"], exact: true})
+    onSuccess: ({ errors }) => {
+      if (errors.length === 0) {
+        queryClient.invalidateQueries({
+          queryKey: ["posts", id, "comments"],
+          exact: true,
+        });
       } else {
         setError(errors[0]);
         throw new Error();
@@ -63,21 +65,20 @@ const PostPage = () => {
     },
     onError: () => {
       console.log("err here");
-    }
-  })
+    },
+  });
 
   const handleModalReveal = (num) => {
     setBoxBlur(num);
     setModalReveal(num);
   };
 
-
   const handleCreate = async () => {
     if (auth.username) {
       mutateComment.mutate({
         postPath: pathname,
         content: commentRef.current.value,
-      })
+      });
     } else {
       handleReveal();
       console.log("must be logged in to create a comment");
@@ -87,11 +88,11 @@ const PostPage = () => {
 
   const handlePostDelete = async () => {
     await deletePost(pathname);
-    queryClient.invalidateQueries({queryKey: ["posts"]})
+    queryClient.invalidateQueries({ queryKey: ["posts"] });
     navigate("/");
   };
 
-  if (post.isErr) {
+  if (post.isError) {
     return (
       <div className="p-1 flex items-start h-screen justify-center animate-pulse">
         <div className="text-center bg-red-800 p-3 rounded-md">
@@ -199,9 +200,13 @@ const PostPage = () => {
               `}
             onClick={handleCreate}
           >
-            {mutateComment.isPending ? <CgSpinner /> 
-            : mutateComment.isSuccess ? <FaRegCheckCircle className="fill-green-500"/> 
-            : "►"}
+            {mutateComment.isPending ? (
+              <CgSpinner />
+            ) : mutateComment.isSuccess ? (
+              <FaRegCheckCircle className="fill-green-500" />
+            ) : (
+              "►"
+            )}
           </div>
         </div>
 
