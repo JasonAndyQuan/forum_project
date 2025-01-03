@@ -141,7 +141,6 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                       ? "placeholder-red-500 border-2 border-red-500"
                       : ""
                   }`}
-                  onChange={(e) => setPassword(e.target.value)}
                   onClick={() => {
                     setErrors({ ...errors, password: null });
                   }}
@@ -162,7 +161,6 @@ const SignUpModal = ({ reveal, handleReveal }) => {
                         ? "placeholder-red-500 border-2 border-red-500"
                         : ""
                     }`}
-                    onChange={(e) => setEmail(e.target.value)}
                     onClick={() => {
                       setErrors({ ...errors, email: null });
                     }}
