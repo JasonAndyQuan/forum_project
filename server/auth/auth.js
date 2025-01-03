@@ -16,7 +16,7 @@ const sessionAuth = session({
     }),
     secret:process.env.SECRET,
     resave: false,
-    saveUninitialized: true, 
+    saveUninitialized: false, 
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
     }
