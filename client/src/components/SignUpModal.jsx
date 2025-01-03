@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { createUser, loginUser } from "../utils/api";
 import { MdOutlineCancelPresentation } from "react-icons/md";
-import {} from "@tanstack/react-query"
 
 const SignUpModal = ({ reveal, handleReveal }) => {
   const [errors, setErrors] = useState({});
@@ -30,6 +29,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
       console.log("login failed");
     } else {
       console.log("login success");
+      window.location.reload();
     }
   };
   const handleSubmit = async (event) => {

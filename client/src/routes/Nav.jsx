@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import AuthButton from "../components/AuthButton";
 import SignUpModal from "../components/SignUpModal";
 import { getSession, logOut } from "../utils/api";
-
 const Nav = () => {
   const [reveal, setReveal] = useState(false);
   const [auth, setAuth] = useState({}); //false -> login / signup  true -> logout
@@ -21,7 +20,7 @@ const Nav = () => {
   useEffect(() => {
     const checker = async () => {
       const { user } = await getSession();
-      // console.log(user);
+      console.log(user);
       if (!user) {
         resetAuth();
       } else {
@@ -29,7 +28,6 @@ const Nav = () => {
       }
     };
     checker();
-    console.log(auth);
   }, []);
   const handleProfileClick = () => {
     if (auth.username) {

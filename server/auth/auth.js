@@ -11,14 +11,15 @@ const pgSession = require("connect-pg-simple")(session);
 
 const sessionAuth = session({
     store: new pgSession ({
-        pool:pool,
+        pool: pool,
         tablename:"session"
     }),
     secret:process.env.SECRET,
     resave: false,
     saveUninitialized: true, 
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 
+        maxAge: 1000 * 60 * 60 * 24,
+        sameSite: "lax", 
     }
 })
 
