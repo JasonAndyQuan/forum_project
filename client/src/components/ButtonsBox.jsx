@@ -22,7 +22,9 @@ const ButtonsBox = ({ handleSelect }) => {
             isLoggedin ? "bg-green-900" : "bg-red-950"
           }`}
         >
-          {welcome}
+          <h2 className="overflow-hidden text-ellipsis whitespace-nowrap p-1">
+            {welcome}
+            </h2>
         </div>
         <div
           className={`${buttonStyle} text-5xl hover:bg-green-600 hover:cursor-pointer `}
