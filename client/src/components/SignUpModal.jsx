@@ -29,7 +29,7 @@ const SignUpModal = ({ reveal, handleReveal }) => {
       console.log("login failed");
     } else {
       console.log("login success");
-      window.location.reload();
+      // window.location.reload();
     }
   };
   const handleSubmit = async (event) => {
