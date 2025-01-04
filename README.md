@@ -3,8 +3,8 @@
 
 
 Deployment: 
-* Frontend hosted on _Vercel_
-* Backend (PSQL and Server) hosted on _Railways_
+* Frontend (React Vite) hosted on _Vercel_
+* Backend (PSQL and Node / Express) hosted on _Railways_
 
 
 
