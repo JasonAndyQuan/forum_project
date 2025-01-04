@@ -33,9 +33,6 @@ const Home = () => {
     }
   }, [pathname]);
 
-  if (posts.isError) {
-    return <div> Unable to fetch posts </div>;
-  }
   return (
     <>
       <div className="bg-[#281E34] w-[100%] h-screen flex p-5 gap-5 overflow-auto ">
@@ -46,7 +43,15 @@ const Home = () => {
           actionName={"Create Post"}
           ogPost={{}}
         />
-        {selected == 1 ? (
+        {posts.isError ? (
+          <>
+            <div className="p-1 flex w-[80%] items-start h-screen justify-center animate-pulse">
+              <div className="text-center bg-red-800 p-3 rounded-md">
+                {" Unable to fetch posts "}
+              </div>
+            </div>
+          </>
+        ) : selected == 1 ? (
           <Outlet
             context={
               {
@@ -60,7 +65,7 @@ const Home = () => {
         ) : (
           <div className="w-[80%] flex flex-col p-3">
             {posts.isLoading ? (
-                <Spinner msg={"Fetching posts"} />
+              <Spinner msg={"Fetching posts"} />
             ) : posts.data?.length === 0 ? (
               <div className="w-full bg-red-900 p-3  rounded-md ">
                 {"No available posts"}
