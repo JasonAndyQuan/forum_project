@@ -45,7 +45,7 @@ const Nav = () => {
     <>
       <SignUpModal reveal={reveal} handleReveal={handleReveal} />
       <div className="bg-[#281E34] h-screen flex flex-col">
-        <div className="h-[50px] bg-[#1E1627] w-screen flex items-center justify-between p-5 pr-3">
+        <div className="h-[3.5rem] bg-[#1E1627] w-screen flex items-center justify-between p-5 pr-3">
           <div className="w-[5rem] flex items-center justify-between">
             <a href="/">
               <IoMdHome size="2rem" className="hover:fill-[#e2e2b6a9]" />
