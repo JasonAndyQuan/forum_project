@@ -2,21 +2,21 @@ const db = require("./pool.js");
 
 const createUser = async (email, username, password) => {
   await db.query(
-    "INSERT INTO users (email, username, password, date) VALUES ($1, $2, $3, $4)",
-    [email, username, password, "today"]
+    "INSERT INTO users (email, username, password, date) VALUES ($1, $2, $3, CURRENT_DATE)",
+    [email, username, password]
   );
 };
 const createPost = async (authorid, title, content) => {
   await db.query(
-    "INSERT INTO posts (authorid, title, content, published) VALUES ($1, $2, $3, $4)",
-    [authorid, title, content, "today"]
+    "INSERT INTO posts (authorid, title, content, published) VALUES ($1, $2, $3, CURRENT_DATE)",
+    [authorid, title, content]
   );
 };
 
 const createComment = async (authorid, postid, content) => {
   await db.query(
-    "INSERT INTO comments (authorid, postid, content, published) VALUES ($1, $2, $3, $4)",
-    [authorid, postid, content, "today"]
+    "INSERT INTO comments (authorid, postid, content, published) VALUES ($1, $2, $3, CURRENT_DATE)",
+    [authorid, postid, content]
   );
 };
 
