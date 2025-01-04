@@ -14,6 +14,7 @@ const express = require("express");
 const app = express();
 
 app.use(sessionAuth);
+app.set('trust proxy', 1)
 app.use(passport.initialize());
 app.use(passport.session());
 
