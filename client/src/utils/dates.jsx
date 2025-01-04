@@ -9,7 +9,10 @@ const timeAgo = (timestamp) => {
   if (diffInDays === 0) {
     return "Today";
   }
+  if (diffInDays === 1){
+    return "Yesterday"
+  }
 
-  return `${diffInDays - 1} days ago`;
+  return `${diffInDays} days ago`;
 };
 export default timeAgo;
