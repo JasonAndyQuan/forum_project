@@ -6,7 +6,7 @@ const timeAgo = (timestamp) => {
   const diffInTime = currentDate - inputDate;
   const diffInDays = Math.floor(diffInTime / (1000 * 60 * 60 * 24));
 
-  if (diffInDays === 1) {
+  if (diffInDays === 0) {
     return "Today";
   }
 
