@@ -55,6 +55,6 @@ app.post("/logout",(req,res)=>{
 app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, '::',() => {
   console.log(`Server is now listening on port : ${process.env.PORT} !!!`);
 });
